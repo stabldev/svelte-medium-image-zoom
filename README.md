@@ -1,2 +1,2 @@
 # svelte-medium-image-zoom
-🔎 🏞 The original medium.com-inspired image zooming library for Svelte (since 2024) 
+Svelte port of the original medium.com-inspired image zoom library (since 2024)
