@@ -11,8 +11,8 @@
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"format": "prettier --write .",
 		"lint": "prettier --check . && eslint .",
-		"storybook": "storybook dev -p 6006",
-		"build-storybook": "storybook build"
+		"storybook": "NODE_OPTIONS='--no-experimental-require-module' storybook dev -p 6006",
+		"build-storybook": "NODE_OPTIONS='--no-experimental-require-module' storybook build"
 	},
 	"files": [
 		"dist",

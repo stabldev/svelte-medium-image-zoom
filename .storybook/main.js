@@ -1,5 +1,3 @@
-
-
 /** @type { import('@storybook/sveltekit').StorybookConfig } */
 const config = {
   "stories": [
