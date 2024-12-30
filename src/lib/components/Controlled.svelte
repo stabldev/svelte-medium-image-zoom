@@ -37,16 +37,22 @@
 
   let ref_content = $state<HTMLDivElement | null>(null);
   let ref_dialog = $state<HTMLDialogElement | null>(null);
+  let ref_modal_content = $state<HTMLDivElement | null>(null);
 
   const id_modal = `rmiz-modal-${_state.id}`;
   const id_modal_img = `rmiz-modal-img-${_state.id}`;
 
   const data_content_state = has_image() ? 'found' : 'not-found';
+  const data_overlay_state =
+    _state.modalState === ModalState.UNLOADED || _state.modalState === ModalState.UNLOADING
+      ? 'hidden'
+      : 'visible';
 
   // ==================================================
 
   onMount(() => {
     set_id();
+    set_and_track_img();
   });
 
   // ==================================================
@@ -68,6 +74,16 @@
       window.getComputedStyle(_state.imgEl).display !== 'none'
     );
   }
+
+  /**
+   * Find and set the image we're working with
+   */
+  function set_and_track_img() {
+    if (!ref_content) return;
+    _state.imgEl = ref_content.querySelector('img') as HTMLImageElement;
+
+    // implement tracking later
+  }
 </script>
 
 <div aria-owns={id_modal} data-smiz="">
@@ -83,6 +99,18 @@
       id={id_modal}
       bind:this={ref_dialog}
       use:portal={get_dialog_container()}
-    ></dialog>
+    >
+      <div data-smiz-modal-overlay={data_overlay_state}></div>
+      <div data-rmiz-modal-content="" bind:this={ref_modal_content}>
+        <img
+          alt={_state.imgEl?.alt}
+          src={_state.imgEl?.currentSrc}
+          srcset={_state.imgEl?.srcset}
+          sizes={_state.imgEl?.sizes}
+          data-smiz-modal-img=""
+          id={id_modal_img}
+        />
+      </div>
+    </dialog>
   {/if}
 </div>
