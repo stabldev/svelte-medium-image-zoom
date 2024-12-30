@@ -12,7 +12,7 @@ export const generate_id = (segments = 3, length = 4) =>
 /**
  * Find or create a container for the dialog
  */
-export function get_dialog_container(): HTMLDivElement {
+export const get_dialog_container = (): HTMLElement => {
   let el = document.querySelector('[data-smiz-portal]');
 
   if (el == null) {
@@ -23,3 +23,16 @@ export function get_dialog_container(): HTMLDivElement {
 
   return el as HTMLDivElement;
 }
+
+// ==================================================
+
+interface TestElType {
+  (type: string, e: unknown): boolean;
+}
+
+const test_el_type: TestElType = (type, el) => {
+  return type === (el as Element).tagName.toUpperCase()
+}
+
+export const test_img = (el: unknown): el is HTMLImageElement => test_el_type('IMG', el)
+export const test_img_loaded = (el: HTMLImageElement) => el.complete && el.naturalHeight !== 0

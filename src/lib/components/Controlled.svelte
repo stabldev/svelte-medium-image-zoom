@@ -1,7 +1,12 @@
 <script lang="ts">
   import type { ControlledProps } from '$lib/types.js';
-  import { generate_id, get_dialog_container } from '$lib/utils.js';
-  import { onMount } from 'svelte';
+  import {
+    generate_id,
+    get_dialog_container,
+    test_img,
+    test_img_loaded
+  } from '$lib/utils.js';
+  import { onMount, tick } from 'svelte';
   import { portal } from 'svelte-portal';
 
   // ==================================================
@@ -39,30 +44,27 @@
   let ref_dialog = $state<HTMLDialogElement | null>(null);
   let ref_modal_content = $state<HTMLDivElement | null>(null);
 
-  const id_modal = `rmiz-modal-${_state.id}`;
-  const id_modal_img = `rmiz-modal-img-${_state.id}`;
+  const id_modal = $derived(`smiz-modal-${_state.id}`);
+  const id_modal_img = $derived(`smiz-modal-img-${_state.id}`);
 
-  const data_content_state = has_image() ? 'found' : 'not-found';
-  const data_overlay_state =
+  const data_content_state = $derived(has_image() ? 'found' : 'not-found');
+  const data_overlay_state = $derived.by(() =>
     _state.modalState === ModalState.UNLOADED || _state.modalState === ModalState.UNLOADING
       ? 'hidden'
-      : 'visible';
+      : 'visible'
+  );
 
   // ==================================================
 
-  onMount(() => {
-    set_id();
-    set_and_track_img();
+  onMount(async () => {
+    await set_and_track_img();
+    handle_img_load();
+
+    // because of SSR, set a unique ID after render
+    _state.id = generate_id();
   });
 
   // ==================================================
-
-  /**
-   * Because of SSR, set a unique ID after render
-   */
-  function set_id() {
-    _state.id = generate_id();
-  }
 
   /**
    * Check if we have a loaded image to work with
@@ -78,16 +80,57 @@
   /**
    * Find and set the image we're working with
    */
-  function set_and_track_img() {
-    if (!ref_content) return;
-    _state.imgEl = ref_content.querySelector('img') as HTMLImageElement;
+  async function set_and_track_img() {
+    // wait for the DOM to update
+    await tick();
 
-    // implement tracking later
+    if (!ref_content) return;
+    _state.imgEl = ref_content.querySelector(
+      'img:not([aria-hidden="true"])'
+    ) as HTMLImageElement;
+
+    // track
+  }
+
+  /**
+   * Ensure we always have the latest img src value loaded
+   */
+  function handle_img_load() {
+    if (!_state.imgEl) return;
+
+    const img_src = _state.imgEl.currentSrc;
+    if (!img_src) return;
+
+    const img = new Image();
+
+    if (test_img(_state.imgEl)) {
+      img.sizes = _state.imgEl.sizes;
+      img.srcset = _state.imgEl.srcset;
+    }
+
+    // img.src must be set after sizes and srcset
+    // because of Firefox flickering on zoom
+    img.src = img_src;
+
+    const set_loaded = () => {
+      _state.loadedImgEl = img;
+    };
+
+    img
+      .decode()
+      .then(set_loaded)
+      .catch(() => {
+        if (test_img_loaded(img)) {
+          set_loaded();
+          return;
+        }
+        img.onload = set_loaded;
+      });
   }
 </script>
 
 <div aria-owns={id_modal} data-smiz="">
-  <div data-rmiz-content={data_content_state} bind:this={ref_content}>
+  <div data-smiz-content={data_content_state} bind:this={ref_content}>
     {@render children()}
   </div>
   {#if has_image()}
@@ -101,7 +144,7 @@
       use:portal={get_dialog_container()}
     >
       <div data-smiz-modal-overlay={data_overlay_state}></div>
-      <div data-rmiz-modal-content="" bind:this={ref_modal_content}>
+      <div data-smiz-modal-content="" bind:this={ref_modal_content}>
         <img
           alt={_state.imgEl?.alt}
           src={_state.imgEl?.currentSrc}
