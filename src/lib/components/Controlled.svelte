@@ -1,6 +1,8 @@
 <script lang="ts">
   import type { ControlledProps } from '$lib/types.js';
-  import { generateId } from '$lib/utils.js';
+  import { generate_id, get_dialog_container } from '$lib/utils.js';
+  import { onMount } from 'svelte';
+  import { portal } from 'svelte-portal';
 
   // ==================================================
 
@@ -16,19 +18,35 @@
   interface ControlledState {
     id: string;
     isZoomImgLoaded: boolean;
-    loadedImgEl: HTMLImageElement | undefined;
+    imgEl: HTMLImageElement | null;
+    loadedImgEl: HTMLImageElement | null;
     modalState: IModalState;
   }
 
   // ==================================================
 
-  let {}: ControlledProps = $props();
+  let { children, dialogClass }: ControlledProps = $props();
 
-  let controlledState: ControlledState = $state({
+  let _state: ControlledState = $state({
     id: '',
     isZoomImgLoaded: false,
-    loadedImgEl: undefined,
+    imgEl: null,
+    loadedImgEl: null,
     modalState: ModalState.UNLOADED
+  });
+
+  let ref_content = $state<HTMLDivElement | null>(null);
+  let ref_dialog = $state<HTMLDialogElement | null>(null);
+
+  const id_modal = `rmiz-modal-${_state.id}`;
+  const id_modal_img = `rmiz-modal-img-${_state.id}`;
+
+  const data_content_state = has_image() ? 'found' : 'not-found';
+
+  // ==================================================
+
+  onMount(() => {
+    set_id();
   });
 
   // ==================================================
@@ -36,9 +54,35 @@
   /**
    * Because of SSR, set a unique ID after render
    */
-  function setId() {
-    controlledState.id = generateId();
+  function set_id() {
+    _state.id = generate_id();
+  }
+
+  /**
+   * Check if we have a loaded image to work with
+   */
+  function has_image() {
+    return (
+      _state.imgEl &&
+      _state.loadedImgEl &&
+      window.getComputedStyle(_state.imgEl).display !== 'none'
+    );
   }
 </script>
 
-<div></div>
+<div aria-owns={id_modal} data-smiz="">
+  <div data-rmiz-content={data_content_state} bind:this={ref_content}>
+    {@render children()}
+  </div>
+  {#if has_image()}
+    <dialog
+      aria-labelledby={id_modal_img}
+      aria-modal="true"
+      class={dialogClass}
+      data-smiz-modal=""
+      id={id_modal}
+      bind:this={ref_dialog}
+      use:portal={get_dialog_container()}
+    ></dialog>
+  {/if}
+</div>
