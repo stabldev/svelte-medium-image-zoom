@@ -8,7 +8,7 @@ export interface ControlledProps {
   dialogClass?: string;
   IconUnzoom?: Component;
   IconZoom?: Component;
-  isZoomed: boolean;
+  isZoomed?: boolean;
   onZoomChange?: (value: boolean) => void;
   zoomImg?: HTMLImgAttributes;
   zoomMargin?: number;

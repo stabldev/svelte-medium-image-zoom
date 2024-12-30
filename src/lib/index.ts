@@ -1,1 +1,4 @@
-// Reexport your entry components here
+import Controlled from './components/Controlled.svelte';
+
+export default Controlled;
+export type { ControlledProps } from './types.js';
