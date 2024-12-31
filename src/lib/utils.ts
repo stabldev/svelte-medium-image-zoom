@@ -42,7 +42,7 @@ export const test_img_loaded = (el: HTMLImageElement) =>
 
 // ==================================================
 
-export interface GetImgSrc {
+interface GetImgSrc {
   (img_el: SupportedImage | null): string | undefined;
 }
 
@@ -52,23 +52,19 @@ export const get_img_src: GetImgSrc = (img_el) => {
   }
 };
 
-export interface GetImgAlt {
+interface GetImgAlt {
   (img_el: SupportedImage | null): string | undefined;
 }
 
 export const get_img_alt: GetImgAlt = (img_el) => {
-  if (img_el) {
-    if (test_img(img_el)) {
-      return img_el.alt ?? undefined;
-    } else {
-      return img_el.getAttribute('aria-label') ?? undefined;
-    }
+  if (img_el && test_img(img_el)) {
+    return img_el.alt ?? undefined;
   }
 };
 
 // ==================================================
 
-export interface GetScaleToWindow {
+interface GetScaleToWindow {
   (data: {
     width: number,
     height: number,
@@ -76,7 +72,7 @@ export interface GetScaleToWindow {
   }): number
 }
 
-export const get_scale_to_window: GetScaleToWindow = ({ height, offset, width }) => {
+const get_scale_to_window: GetScaleToWindow = ({ height, offset, width }) => {
   return Math.min(
     (window.innerWidth - offset * 2) / width, // scale X-axis
     (window.innerHeight - offset * 2) / height // scale Y-axis
@@ -85,7 +81,7 @@ export const get_scale_to_window: GetScaleToWindow = ({ height, offset, width })
 
 // ==================================================
 
-export interface GetScaleToWindowMax {
+interface GetScaleToWindowMax {
   (data: {
     container_height: number,
     container_width: number,
@@ -95,7 +91,7 @@ export interface GetScaleToWindowMax {
   }): number
 }
 
-export const get_scale_to_window_max: GetScaleToWindowMax = ({
+const get_scale_to_window_max: GetScaleToWindowMax = ({
   container_height,
   container_width,
   offset,
@@ -117,7 +113,7 @@ export const get_scale_to_window_max: GetScaleToWindowMax = ({
 
 // ==================================================
 
-export interface GetScale {
+interface GetScale {
   (data: {
     container_height: number,
     container_width: number,
@@ -127,7 +123,7 @@ export interface GetScale {
   }): number
 }
 
-export const getScale: GetScale = ({
+const get_scale: GetScale = ({
   container_height,
   container_width,
   offset,
@@ -155,7 +151,7 @@ export const getScale: GetScale = ({
 
 // ==================================================
 
-export interface GetImgRegularStyle {
+interface GetImgRegularStyle {
   (data: {
     container_height: number,
     container_left: number,
@@ -167,7 +163,7 @@ export interface GetImgRegularStyle {
   }): string
 }
 
-export const get_img_regular_style: GetImgRegularStyle = ({
+const get_img_regular_style: GetImgRegularStyle = ({
   container_height,
   container_left,
   container_top,
@@ -176,7 +172,7 @@ export const get_img_regular_style: GetImgRegularStyle = ({
   target_height,
   target_width,
 }) => {
-  const scale = getScale({
+  const scale = get_scale({
     container_height: container_height,
     container_width: container_width,
     offset,
@@ -193,7 +189,7 @@ export const get_img_regular_style: GetImgRegularStyle = ({
 
 // ==================================================
 
-export interface GetStyleModalImg {
+interface GetStyleModalImg {
   (data: {
     has_zoom_img: boolean,
     img_src: string | undefined,
