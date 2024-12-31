@@ -196,6 +196,9 @@
           data-smiz-modal-img=""
           id={id_modal_img}
         />
+        <button aria-label={a11yNameButtonUnzoom} data-smiz-btn-unzoom="" type="button">
+          <IconUnzoom />
+        </button>
       </div>
     </dialog>
   {/if}
