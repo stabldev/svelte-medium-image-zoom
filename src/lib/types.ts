@@ -3,6 +3,11 @@ import type { HTMLImgAttributes } from 'svelte/elements';
 
 export type SupportedImage = HTMLImageElement;
 
+export interface BodyAttrs {
+  overflow: string;
+  width: string;
+}
+
 export interface ControlledProps {
   a11yNameButtonUnzoom?: string;
   a11yNameButtonZoom?: string;

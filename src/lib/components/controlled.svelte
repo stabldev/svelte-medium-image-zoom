@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { ControlledProps, SupportedImage } from '$lib/types.js';
+  import type { BodyAttrs, ControlledProps, SupportedImage } from '$lib/types.js';
   import {
     generate_id,
     get_dialog_container,
@@ -23,6 +23,16 @@
   const IMAGE_QUERY = ['img', '[role="img"]', '[data-zoom]']
     .map((x) => `${x}:not([aria-hidden="true"])`)
     .join(',');
+
+  /**
+   * Helps keep track of some key `<body>` attributes
+   * so we can remove and re-add them when disabling and
+   * re-enabling body scrolling
+   */
+  const DEFAULT_BODY_ATTRS: BodyAttrs = {
+    overflow: '',
+    width: ''
+  };
 
   // ==================================================
 
@@ -70,6 +80,9 @@
   let ref_content = $state<HTMLDivElement | null>(null);
   let ref_dialog = $state<HTMLDialogElement | null>(null);
   let ref_modal_content = $state<HTMLDivElement | null>(null);
+  let ref_modal_img = $state<HTMLImageElement | null>(null);
+
+  let prev_body_attrs = $state(DEFAULT_BODY_ATTRS);
 
   const id_modal = $derived(`smiz-modal-${_state.id}`);
   const id_modal_img = $derived(`smiz-modal-img-${_state.id}`);
@@ -186,6 +199,62 @@
         img.onload = set_loaded;
       });
   }
+
+  /**
+   * Perform zooming actions
+   */
+  function zoom() {
+    body_scroll_disable();
+    ref_dialog?.showModal();
+    ref_modal_img?.addEventListener('transitionend', handle_img_transition_end);
+    _state.modal_state = ModalState.LOADING;
+  }
+
+  /**
+   * Perform unzooming actions
+   */
+  function unzoom() {
+    _state.modal_state = ModalState.UNLOADING;
+  }
+
+  /**
+   * Handle img zoom/unzoom transitionend events and update states:
+   *   - LOADING -> LOADED
+   *   - UNLOADING -> UNLOADED
+   */
+  function handle_img_transition_end() {
+    //
+    if (_state.modal_state === ModalState.LOADING) {
+      _state.modal_state = ModalState.LOADED;
+    } else if (_state.modal_state === ModalState.UNLOADING) {
+      _state.modal_state = ModalState.UNLOADED;
+    }
+  }
+
+  /**
+   * Disable body scrolling
+   */
+  function body_scroll_disable() {
+    prev_body_attrs = {
+      overflow: document.body.style.overflow,
+      width: document.body.style.width
+    };
+
+    // get clientWidth before setting overflow: 'hidden'
+    const client_width = document.body.clientWidth;
+
+    document.body.style.overflow = 'hidden';
+    document.body.style.width = `${client_width}px`;
+  }
+
+  /**
+   * Enable body scrolling
+   */
+  function body_scroll_enable() {
+    document.body.style.width = prev_body_attrs.width;
+    document.body.style.overflow = prev_body_attrs.overflow;
+    prev_body_attrs = DEFAULT_BODY_ATTRS;
+  }
 </script>
 
 <svelte:element this={wrapElement} aria-owns={id_modal} data-smiz="">
@@ -219,6 +288,7 @@
           style={style_obj_to_css_string(style_modal_img_obj)}
           width={style_modal_img_obj.width}
           height={style_modal_img_obj.height}
+          bind:this={ref_modal_img}
         />
         <button aria-label={a11yNameButtonUnzoom} data-smiz-btn-unzoom="" type="button">
           <IconUnzoom />
