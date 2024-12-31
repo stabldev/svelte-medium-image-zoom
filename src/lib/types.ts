@@ -14,4 +14,5 @@ export interface ControlledProps {
   onZoomChange?: (value: boolean) => void;
   zoomImg?: HTMLImgAttributes;
   zoomMargin?: number;
+  wrapElement?: 'div' | 'span';
 }

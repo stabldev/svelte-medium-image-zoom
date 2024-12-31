@@ -42,7 +42,7 @@
 
   // ==================================================
 
-  let { children, dialogClass }: ControlledProps = $props();
+  let { children, dialogClass, wrapElement = 'div' }: ControlledProps = $props();
 
   let _state: ControlledState = $state({
     id: '',
@@ -152,7 +152,7 @@
   }
 </script>
 
-<div aria-owns={id_modal} data-smiz="">
+<svelte:element this={wrapElement} aria-owns={id_modal} data-smiz="">
   <div data-smiz-content={data_content_state} bind:this={ref_content}>
     {@render children()}
   </div>
@@ -179,4 +179,4 @@
       </div>
     </dialog>
   {/if}
-</div>
+</svelte:element>

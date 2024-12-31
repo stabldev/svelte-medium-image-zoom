@@ -1,4 +1,4 @@
-import type { SupportedImage } from "./types.js";
+import type { SupportedImage } from './types.js';
 
 /**
  * Generate random string id with given segments and length
@@ -44,36 +44,36 @@ export const test_img_loaded = (el: HTMLImageElement) =>
 
 // ==================================================
 
-const URL_REGEX = /url(?:\(['"]?)(.*?)(?:['"]?\))/
+const URL_REGEX = /url(?:\(['"]?)(.*?)(?:['"]?\))/;
 
 export interface GetImgSrc {
-  (img_el: SupportedImage | null): string | undefined
+  (img_el: SupportedImage | null): string | undefined;
 }
 
 export const get_img_src: GetImgSrc = (img_el) => {
   if (img_el) {
     if (test_img(img_el)) {
-      return img_el.currentSrc
+      return img_el.currentSrc;
     } else if (test_div(img_el)) {
-      const bg_img = window.getComputedStyle(img_el).backgroundImage
+      const bg_img = window.getComputedStyle(img_el).backgroundImage;
 
       if (bg_img) {
-        return URL_REGEX.exec(bg_img)?.[1]
+        return URL_REGEX.exec(bg_img)?.[1];
       }
     }
   }
-}
+};
 
 export interface GetImgAlt {
-  (img_el: SupportedImage | null): string | undefined
+  (img_el: SupportedImage | null): string | undefined;
 }
 
 export const get_img_alt: GetImgAlt = (img_el) => {
   if (img_el) {
     if (test_img(img_el)) {
-      return img_el.alt ?? undefined
+      return img_el.alt ?? undefined;
     } else {
-      return img_el.getAttribute('aria-label') ?? undefined
+      return img_el.getAttribute('aria-label') ?? undefined;
     }
   }
-}
+};
