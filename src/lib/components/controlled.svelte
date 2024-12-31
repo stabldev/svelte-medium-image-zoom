@@ -94,6 +94,10 @@
     img_alt ? `${a11yNameButtonZoom}: ${img_alt}` : a11yNameButtonZoom
   );
 
+  const style_content = $derived(
+    `visibility: ${_state.modal_state === ModalState.UNLOADED ? 'visible' : 'hidden'}`
+  );
+
   // ==================================================
 
   onMount(async () => {
@@ -168,7 +172,7 @@
 </script>
 
 <svelte:element this={wrapElement} aria-owns={id_modal} data-smiz="">
-  <div data-smiz-content={data_content_state} bind:this={ref_content}>
+  <div data-smiz-content={data_content_state} bind:this={ref_content} style={style_content}>
     {@render children()}
   </div>
   {#if has_image()}

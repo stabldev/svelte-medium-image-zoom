@@ -40,10 +40,10 @@
   cursor: zoom-out;
   z-index: 1;
 }
-[data-smiz-content="found"] img,
-[data-smiz-content="found"] svg,
-[data-smiz-content="found"] [role="img"],
-[data-smiz-content="found"] [data-zoom] {
+[data-smiz-content='found'] img,
+[data-smiz-content='found'] svg,
+[data-smiz-content='found'] [role='img'],
+[data-smiz-content='found'] [data-zoom] {
   cursor: zoom-in;
 }
 [data-smiz-modal]::backdrop {
@@ -68,10 +68,10 @@
   inset: 0;
   transition: background-color 0.3s;
 }
-[data-smiz-modal-overlay="hidden"] {
+[data-smiz-modal-overlay='hidden'] {
   background-color: rgba(255, 255, 255, 0);
 }
-[data-smiz-modal-overlay="visible"] {
+[data-smiz-modal-overlay='visible'] {
   background-color: rgba(255, 255, 255, 1);
 }
 [data-smiz-modal-content] {
@@ -92,4 +92,3 @@
     transition-duration: 0.01ms !important;
   }
 }
-
