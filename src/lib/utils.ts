@@ -26,6 +26,19 @@ export const get_dialog_container = (): HTMLElement => {
   return el as HTMLDivElement;
 };
 
+
+/**
+ * Convert style object to css string
+ * @params
+ * style: string;
+ * style = { top: 100px } => "top: 100px;"
+ */
+export const style_obj_to_css_string = (style: Record<string, string>) => {
+  return Object.entries(style)
+    .map(([key, value]) => `${key}: ${value};`)
+    .join(' ')
+}
+
 // ==================================================
 
 interface TestElType {
@@ -160,7 +173,7 @@ interface GetImgRegularStyle {
     offset: number,
     target_height: number,
     target_width: number,
-  }): string
+  }): Record<string, string>
 }
 
 const get_img_regular_style: GetImgRegularStyle = ({
@@ -180,11 +193,13 @@ const get_img_regular_style: GetImgRegularStyle = ({
     target_width: target_width,
   })
 
-  return `top: ${container_top}px;
-          left: ${container_left}px;
-          width: ${container_width * scale}px;
-          height: ${container_height * scale}px;
-          transform: translate(0,0) scale(${1 / scale});`;
+  return {
+    top: `${container_top}px`,
+    left: `${container_left}px`,
+    width: `${container_width * scale}px`,
+    height: `${container_height * scale}px`,
+    transform: `translate(0, 0) scale(${1 / scale})`,
+  };
 }
 
 // ==================================================
@@ -197,7 +212,7 @@ interface GetStyleModalImg {
     loaded_img_el: HTMLImageElement | undefined,
     offset: number,
     target_el: SupportedImage,
-  }): string
+  }): Record<string, string>
 }
 
 export const get_style_modal_img: GetStyleModalImg = ({
@@ -223,5 +238,18 @@ export const get_style_modal_img: GetStyleModalImg = ({
 
   const style = Object.assign({}, style_img_regular)
 
-  return ''
+  if (is_zoomed) {
+    const viewport_x = window.innerWidth / 2
+    const viewport_y = window.innerHeight / 2
+
+    const child_center_x = parseFloat(String(style.left || 0)) + (parseFloat(String(style.width || 0)) / 2)
+    const child_center_y = parseFloat(String(style.top || 0)) + (parseFloat(String(style.height || 0)) / 2)
+
+    const translate_x = viewport_x - child_center_x
+    const translate_y = viewport_y - child_center_y
+
+    style.transform = `translate(${translate_x}px,${translate_y}px) scale(1)`
+  }
+
+  return style;
 }

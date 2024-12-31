@@ -6,7 +6,9 @@
     test_img,
     test_img_loaded,
     get_img_src,
-    get_img_alt
+    get_img_alt,
+    get_style_modal_img,
+    style_obj_to_css_string
   } from '$lib/utils.js';
   import { onMount, tick } from 'svelte';
   import { portal } from 'svelte-portal';
@@ -37,7 +39,7 @@
     id: string;
     is_zoom_img_loaded: boolean;
     img_el: SupportedImage | null;
-    loaded_img_el: HTMLImageElement | null;
+    loaded_img_el: HTMLImageElement | undefined;
     modal_state: IModalState;
   }
 
@@ -61,7 +63,7 @@
     id: '',
     is_zoom_img_loaded: false,
     img_el: null,
-    loaded_img_el: null,
+    loaded_img_el: undefined,
     modal_state: ModalState.UNLOADED
   });
 
@@ -97,6 +99,21 @@
   const style_content = $derived(
     `visibility: ${_state.modal_state === ModalState.UNLOADED ? 'visible' : 'hidden'}`
   );
+
+  const style_modal_img_obj = $derived(
+    has_image()
+      ? get_style_modal_img({
+          has_zoom_img,
+          img_src,
+          is_zoomed: isZoomed!, // TODO: fix this later
+          loaded_img_el: _state.loaded_img_el,
+          offset: zoomMargin,
+          target_el: _state.img_el as SupportedImage
+        })
+      : {}
+  );
+
+  $inspect(style_modal_img_obj);
 
   // ==================================================
 
@@ -199,6 +216,9 @@
           sizes={img_sizes}
           data-smiz-modal-img=""
           id={id_modal_img}
+          style={style_obj_to_css_string(style_modal_img_obj)}
+          width={style_modal_img_obj.width}
+          height={style_modal_img_obj.height}
         />
         <button aria-label={a11yNameButtonUnzoom} data-smiz-btn-unzoom="" type="button">
           <IconUnzoom />
