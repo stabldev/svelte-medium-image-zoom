@@ -12,7 +12,7 @@ export interface ControlledProps {
   IconZoom?: Component;
   isZoomed?: boolean;
   onZoomChange?: (value: boolean) => void;
+  wrapElement?: 'div' | 'span';
   zoomImg?: HTMLImgAttributes;
   zoomMargin?: number;
-  wrapElement?: 'div' | 'span';
 }

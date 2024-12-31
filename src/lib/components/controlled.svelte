@@ -45,13 +45,16 @@
   // ==================================================
 
   let {
+    a11yNameButtonUnzoom = 'Expand image',
+    a11yNameButtonZoom = 'Minimize image',
     children,
     dialogClass,
-    wrapElement = 'div',
-    a11yNameButtonZoom = 'Minimize image',
-    a11yNameButtonUnzoom = 'Expand image',
-    IconZoom = IEnlarge,
     IconUnzoom = ICompress,
+    IconZoom = IEnlarge,
+    isZoomed,
+    onZoomChange,
+    wrapElement = 'div',
+    zoomImg,
     zoomMargin = 0
   }: ControlledProps = $props();
 
@@ -69,6 +72,11 @@
 
   const id_modal = $derived(`smiz-modal-${_state.id}`);
   const id_modal_img = $derived(`smiz-modal-img-${_state.id}`);
+
+  const has_zoom_img = $derived(!!zoomImg?.src);
+  const is_modal_active = $derived(
+    _state.modal_state === ModalState.LOADING || _state.modal_state === ModalState.LOADED
+  );
 
   const data_content_state = $derived(has_image() ? 'found' : 'not-found');
   const data_overlay_state = $derived.by(() =>
