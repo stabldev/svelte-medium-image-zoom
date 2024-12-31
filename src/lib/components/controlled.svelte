@@ -11,6 +11,8 @@
   } from '$lib/utils.js';
   import { onMount, tick } from 'svelte';
   import { portal } from 'svelte-portal';
+  import IEnlarge from '$lib/components/icons/i-enlarge.svelte';
+  import ICompress from '$lib/components/icons/i-compress.svelte';
 
   // ==================================================
 
@@ -42,7 +44,16 @@
 
   // ==================================================
 
-  let { children, dialogClass, wrapElement = 'div' }: ControlledProps = $props();
+  let {
+    children,
+    dialogClass,
+    wrapElement = 'div',
+    a11yNameButtonZoom = 'Minimize image',
+    a11yNameButtonUnzoom = 'Expand image',
+    IconZoom = IEnlarge,
+    IconUnzoom = ICompress,
+    zoomMargin = 0
+  }: ControlledProps = $props();
 
   let _state: ControlledState = $state({
     id: '',
@@ -77,6 +88,10 @@
   );
   const img_srcset = $derived(
     is_img ? (_state.img_el as HTMLImageElement).srcset : undefined
+  );
+
+  const label_btn_zoom = $derived(
+    img_alt ? `${a11yNameButtonZoom}: ${img_alt}` : a11yNameButtonZoom
   );
 
   // ==================================================
@@ -157,6 +172,11 @@
     {@render children()}
   </div>
   {#if has_image()}
+    <svelte:element this={wrapElement} data-smiz-ghost="">
+      <button aria-label={label_btn_zoom} data-smiz-btn-zoom="" type="button">
+        <IconZoom />
+      </button>
+    </svelte:element>
     <dialog
       aria-labelledby={id_modal_img}
       aria-modal="true"
