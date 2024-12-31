@@ -1,13 +1,25 @@
 <script lang="ts">
-  import type { ControlledProps } from '$lib/types.js';
+  import type { ControlledProps, SupportedImage } from '$lib/types.js';
   import {
     generate_id,
     get_dialog_container,
     test_img,
-    test_img_loaded
+    test_img_loaded,
+    get_img_src,
+    test_div,
+    get_img_alt
   } from '$lib/utils.js';
   import { onMount, tick } from 'svelte';
   import { portal } from 'svelte-portal';
+
+  // ==================================================
+
+  /**
+   * The selector query we use to find and track the image
+   */
+  const IMAGE_QUERY = ['img', '[role="img"]', '[data-zoom]']
+    .map((x) => `${x}:not([aria-hidden="true"])`)
+    .join(',');
 
   // ==================================================
 
@@ -22,10 +34,10 @@
 
   interface ControlledState {
     id: string;
-    isZoomImgLoaded: boolean;
-    imgEl: HTMLImageElement | null;
-    loadedImgEl: HTMLImageElement | null;
-    modalState: IModalState;
+    is_zoom_img_loaded: boolean;
+    img_el: SupportedImage | null;
+    loaded_img_el: HTMLImageElement | null;
+    modal_state: IModalState;
   }
 
   // ==================================================
@@ -34,10 +46,10 @@
 
   let _state: ControlledState = $state({
     id: '',
-    isZoomImgLoaded: false,
-    imgEl: null,
-    loadedImgEl: null,
-    modalState: ModalState.UNLOADED
+    is_zoom_img_loaded: false,
+    img_el: null,
+    loaded_img_el: null,
+    modal_state: ModalState.UNLOADED
   });
 
   let ref_content = $state<HTMLDivElement | null>(null);
@@ -49,9 +61,22 @@
 
   const data_content_state = $derived(has_image() ? 'found' : 'not-found');
   const data_overlay_state = $derived.by(() =>
-    _state.modalState === ModalState.UNLOADED || _state.modalState === ModalState.UNLOADING
+    _state.modal_state === ModalState.UNLOADED ||
+    _state.modal_state === ModalState.UNLOADING
       ? 'hidden'
       : 'visible'
+  );
+
+  const is_div = $derived(test_div(_state.img_el));
+  const is_img = $derived(test_img(_state.img_el));
+
+  const img_alt = $derived(get_img_alt(_state.img_el));
+  const img_src = $derived(get_img_src(_state.img_el));
+  const img_sizes = $derived(
+    is_img ? (_state.img_el as HTMLImageElement).sizes : undefined
+  );
+  const img_srcset = $derived(
+    is_img ? (_state.img_el as HTMLImageElement).srcset : undefined
   );
 
   // ==================================================
@@ -71,9 +96,9 @@
    */
   function has_image() {
     return (
-      _state.imgEl &&
-      _state.loadedImgEl &&
-      window.getComputedStyle(_state.imgEl).display !== 'none'
+      _state.img_el &&
+      _state.loaded_img_el &&
+      window.getComputedStyle(_state.img_el).display !== 'none'
     );
   }
 
@@ -85,9 +110,7 @@
     await tick();
 
     if (!ref_content) return;
-    _state.imgEl = ref_content.querySelector(
-      'img:not([aria-hidden="true"])'
-    ) as HTMLImageElement;
+    _state.img_el = ref_content.querySelector(IMAGE_QUERY) as SupportedImage | null;
 
     // track
   }
@@ -96,16 +119,16 @@
    * Ensure we always have the latest img src value loaded
    */
   function handle_img_load() {
-    if (!_state.imgEl) return;
+    if (!_state.img_el) return;
 
-    const img_src = _state.imgEl.currentSrc;
+    const img_src = get_img_src(_state.img_el);
     if (!img_src) return;
 
     const img = new Image();
 
-    if (test_img(_state.imgEl)) {
-      img.sizes = _state.imgEl.sizes;
-      img.srcset = _state.imgEl.srcset;
+    if (test_img(_state.img_el)) {
+      img.sizes = _state.img_el.sizes;
+      img.srcset = _state.img_el.srcset;
     }
 
     // img.src must be set after sizes and srcset
@@ -113,7 +136,7 @@
     img.src = img_src;
 
     const set_loaded = () => {
-      _state.loadedImgEl = img;
+      _state.loaded_img_el = img;
     };
 
     img
@@ -146,10 +169,10 @@
       <div data-smiz-modal-overlay={data_overlay_state}></div>
       <div data-smiz-modal-content="" bind:this={ref_modal_content}>
         <img
-          alt={_state.imgEl?.alt}
-          src={_state.imgEl?.currentSrc}
-          srcset={_state.imgEl?.srcset}
-          sizes={_state.imgEl?.sizes}
+          alt={img_alt}
+          src={img_src}
+          srcset={img_srcset}
+          sizes={img_sizes}
           data-smiz-modal-img=""
           id={id_modal_img}
         />
