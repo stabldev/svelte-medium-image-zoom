@@ -29,7 +29,7 @@
    * so we can remove and re-add them when disabling and
    * re-enabling body scrolling
    */
-  const DEFAULT_BODY_ATTRS: BodyAttrs = {
+  const default_body_attrs: BodyAttrs = {
     overflow: '',
     width: ''
   };
@@ -82,7 +82,7 @@
   let ref_modal_content = $state<HTMLDivElement | null>(null);
   let ref_modal_img = $state<HTMLImageElement | null>(null);
 
-  let prev_body_attrs = $state(DEFAULT_BODY_ATTRS);
+  let prev_body_attrs = $state(default_body_attrs);
 
   const id_modal = $derived(`smiz-modal-${_state.id}`);
   const id_modal_img = $derived(`smiz-modal-img-${_state.id}`);
@@ -253,7 +253,7 @@
   function body_scroll_enable() {
     document.body.style.width = prev_body_attrs.width;
     document.body.style.overflow = prev_body_attrs.overflow;
-    prev_body_attrs = DEFAULT_BODY_ATTRS;
+    prev_body_attrs = default_body_attrs;
   }
 </script>
 
