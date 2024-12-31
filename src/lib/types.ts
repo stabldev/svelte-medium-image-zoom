@@ -1,7 +1,7 @@
 import type { Component, Snippet } from 'svelte';
 import type { HTMLImgAttributes } from 'svelte/elements';
 
-export type SupportedImage = HTMLImageElement | HTMLDivElement | HTMLSpanElement;
+export type SupportedImage = HTMLImageElement;
 
 export interface ControlledProps {
   a11yNameButtonUnzoom?: string;

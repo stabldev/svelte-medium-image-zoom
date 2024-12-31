@@ -6,7 +6,6 @@
     test_img,
     test_img_loaded,
     get_img_src,
-    test_div,
     get_img_alt
   } from '$lib/utils.js';
   import { onMount, tick } from 'svelte';
@@ -86,17 +85,10 @@
       : 'visible'
   );
 
-  const is_div = $derived(test_div(_state.img_el));
-  const is_img = $derived(test_img(_state.img_el));
-
   const img_alt = $derived(get_img_alt(_state.img_el));
   const img_src = $derived(get_img_src(_state.img_el));
-  const img_sizes = $derived(
-    is_img ? (_state.img_el as HTMLImageElement).sizes : undefined
-  );
-  const img_srcset = $derived(
-    is_img ? (_state.img_el as HTMLImageElement).srcset : undefined
-  );
+  const img_sizes = $derived(test_img(_state.img_el) ? _state.img_el.sizes : undefined);
+  const img_srcset = $derived(test_img(_state.img_el) ? _state.img_el.srcset : undefined);
 
   const label_btn_zoom = $derived(
     img_alt ? `${a11yNameButtonZoom}: ${img_alt}` : a11yNameButtonZoom
