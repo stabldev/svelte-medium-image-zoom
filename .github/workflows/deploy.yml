@@ -1,42 +1,20 @@
-name: Deploy
+name: Deploy storybook to GH-pages
 
 on:
   push:
-    paths-ignore:
-      - '*.md'
-      - 'LICENSE'
-  pull_request:
-    paths-ignore:
-      - '*.md'
-      - 'LICENSE'
+    branches:
+      - main
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
 jobs:
-  gh-pages:
-    name: GH-pages
+  deploy:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v4
+      - uses: bitovi/github-actions-storybook-to-github-pages@v1.0.0
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          fetch-depth: 0
-
-      - name: Setup Node.js 20.x
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: npm
-
-      - name: Install Dependencies
-        run: npm ci
-
-      - name: Run the CI build
-        run: npm run build:storybook
-
-      - name: Deploy to gh-pages
-        uses: peaceiris/actions-gh-pages@v4
-        if: ${{ github.ref == 'refs/heads/main' }}
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./storybook-static
+          path: ./storybook-static
+          build_command: npm run build:storybook
