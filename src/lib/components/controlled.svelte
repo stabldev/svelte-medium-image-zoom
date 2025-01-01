@@ -127,8 +127,14 @@
 
   // handle modal_state changes
   $effect(() => {
-    if (modal_state === ModalState.UNLOADING) {
+    if (modal_state === ModalState.LOADING) {
+      document.addEventListener('keydown', handle_key_down, true);
+    } else if (modal_state === ModalState.LOADED) {
+      window.addEventListener('wheel', handle_wheel, { passive: true });
+    } else if (modal_state === ModalState.UNLOADING) {
       ensure_img_transition_end();
+      window.removeEventListener('wheel', handle_wheel);
+      document.removeEventListener('keydown', handle_key_down, true);
     } else if (modal_state === ModalState.UNLOADED) {
       untrack(() => body_scroll_enable());
       ref_modal_img?.removeEventListener('transitionend', handle_img_transition_end);
@@ -269,6 +275,30 @@
   function handle_dialog_close(e: Event) {
     e.stopPropagation();
     handle_unzoom();
+  }
+
+  /**
+   * Intercept default dialog.close() and use ours so we can animate
+   */
+  function handle_key_down(e: KeyboardEvent) {
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      e.stopPropagation();
+      handle_unzoom();
+    }
+  }
+
+  /**
+   * Unzoom on wheel event
+   */
+  function handle_wheel(e: WheelEvent) {
+    // don't handle the event when the user is zooming with ctrl + wheel (or with pinch to zoom)
+    if (e.ctrlKey) return;
+
+    e.stopPropagation();
+    queueMicrotask(() => {
+      handle_unzoom();
+    });
   }
 
   /**
