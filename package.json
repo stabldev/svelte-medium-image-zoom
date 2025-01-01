@@ -99,7 +99,6 @@
     "vite": "^5.4.11"
   },
   "publishConfig": {
-    "access": "public",
-    "provenance": true
+    "access": "public"
   }
 }
