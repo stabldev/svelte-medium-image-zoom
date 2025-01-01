@@ -1,0 +1,35 @@
+html {
+  font-size: 62.5%;
+  box-sizing: border-box;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+*:focus:not(:focus-visible) {
+  outline: none;
+}
+
+body {
+  margin: 2em;
+  font-size: 1.6rem;
+  font-family: monospace;
+  line-height: 1.5;
+  color: #333;
+}
+
+body,
+input,
+button {
+  -webkit-font-smoothing: antialiased;
+}

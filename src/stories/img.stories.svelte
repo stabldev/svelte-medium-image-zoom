@@ -2,6 +2,7 @@
   import { defineMeta } from '@storybook/addon-svelte-csf';
   import Zoom from '$lib/index.js';
   import '$lib/styles.css';
+  import './base.css';
 
   import { img_that_wanaka_tree } from './assets/index.js';
 
