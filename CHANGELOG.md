@@ -1,5 +1,12 @@
 # svelte-medium-image-zoom
 
+## 0.0.3
+
+### Patch Changes
+
+- f4eee5a: chore: remove styles for zoom and unzoom btns
+- 861a973: chore: remove unzoom button component and props
+
 ## 0.0.2
 
 ### Patch Changes
