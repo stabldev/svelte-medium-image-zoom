@@ -247,6 +247,31 @@
   }
 
   /**
+   * Prevent the browser from removing the dialog on Escape
+   */
+  function handle_dialog_cancel(e: Event) {
+    e.preventDefault();
+  }
+
+  /**
+   *  have dialog.click() only close in certain situations
+   */
+  function handle_dialog_click(e: Event) {
+    if (e.target === ref_modal_content || e.target === ref_modal_img) {
+      e.stopPropagation();
+      handle_unzoom();
+    }
+  }
+
+  /**
+   *  Prevent dialog's close event from closing a parent modal
+   */
+  function handle_dialog_close(e: Event) {
+    e.stopPropagation();
+    handle_unzoom();
+  }
+
+  /**
    * Perform zooming actions
    */
   function zoom() {
@@ -339,6 +364,7 @@
         <IconZoom />
       </button>
     </svelte:element>
+    <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_noninteractive_element_interactions -->
     <dialog
       aria-labelledby={id_modal_img}
       aria-modal="true"
@@ -347,6 +373,9 @@
       id={id_modal}
       bind:this={ref_dialog}
       use:portal={get_dialog_container()}
+      onclick={handle_dialog_click}
+      onclose={handle_dialog_close}
+      oncancel={handle_dialog_cancel}
     >
       <div data-smiz-modal-overlay={data_overlay_state}></div>
       <div data-smiz-modal-content="" bind:this={ref_modal_content}>
