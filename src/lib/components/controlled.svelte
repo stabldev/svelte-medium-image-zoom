@@ -108,6 +108,9 @@
   const label_btn_zoom = $derived(
     img_alt ? `${a11yNameButtonZoom}: ${img_alt}` : a11yNameButtonZoom
   );
+  const label_btn_unzoom = $derived(
+    img_alt ? `${a11yNameButtonUnzoom}: ${img_alt}` : a11yNameButtonUnzoom
+  );
 
   const style_content = $derived(
     `visibility: ${_state.modal_state === ModalState.UNLOADED ? 'visible' : 'hidden'}`
@@ -118,13 +121,14 @@
       ? get_style_modal_img({
           has_zoom_img,
           img_src,
-          is_zoomed: isZoomed!, // TODO: fix this later
+          is_zoomed: isZoomed! && is_modal_active, // TODO: fix this later
           loaded_img_el: _state.loaded_img_el,
           offset: zoomMargin,
           target_el: _state.img_el as SupportedImage
         })
       : {}
   );
+  const style_modal_img_string = $derived(style_obj_to_css_string(style_modal_img_obj));
 
   $inspect(style_modal_img_obj);
 
@@ -285,7 +289,7 @@
           sizes={img_sizes}
           data-smiz-modal-img=""
           id={id_modal_img}
-          style={style_obj_to_css_string(style_modal_img_obj)}
+          style={style_modal_img_string}
           width={style_modal_img_obj.width}
           height={style_modal_img_obj.height}
           bind:this={ref_modal_img}
