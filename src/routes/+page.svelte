@@ -3,6 +3,7 @@
   import '$lib/styles.css';
 </script>
 
+<h1>svelte-medium-image-zoom</h1>
 <Zoom>
   <img
     alt="That Wanaka Tree, New Zealand by Laura Smetsers"

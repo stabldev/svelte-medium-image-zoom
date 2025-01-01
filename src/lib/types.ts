@@ -15,11 +15,9 @@ export interface BodyAttrs {
 
 export interface ControlledProps {
   a11yNameButtonUnzoom?: string;
-  a11yNameButtonZoom?: string;
   children: Snippet;
   dialogClass?: string;
   IconUnzoom?: Component;
-  IconZoom?: Component;
   isZoomed?: boolean;
   onZoomChange?: (value: boolean) => void;
   wrapElement?: 'div' | 'span';

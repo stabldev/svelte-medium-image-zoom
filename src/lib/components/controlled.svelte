@@ -12,7 +12,6 @@
   } from '$lib/utils.js';
   import { onDestroy, onMount, tick, untrack } from 'svelte';
   import { portal } from 'svelte-portal';
-  import IEnlarge from '$lib/components/icons/i-enlarge.svelte';
   import ICompress from '$lib/components/icons/i-compress.svelte';
 
   // ==================================================
@@ -49,11 +48,9 @@
 
   let {
     a11yNameButtonUnzoom: a11y_name_button_unzoom = 'Expand image',
-    a11yNameButtonZoom: a11y_name_button_zoom = 'Minimize image',
     children,
     dialogClass: dialog_class,
     IconUnzoom = ICompress,
-    IconZoom = IEnlarge,
     isZoomed: is_zoomed = false,
     onZoomChange: on_zoom_change,
     wrapElement: wrap_element = 'div',
@@ -91,10 +88,6 @@
   const img_src = $derived(get_img_src(img_el));
   const img_sizes = $derived(test_img(img_el) ? img_el.sizes : undefined);
   const img_srcset = $derived(test_img(img_el) ? img_el.srcset : undefined);
-
-  const label_btn_zoom = $derived(
-    img_alt ? `${a11y_name_button_zoom}: ${img_alt}` : a11y_name_button_zoom
-  );
 
   const style_modal_img_obj = $derived(
     has_image()
@@ -384,16 +377,6 @@
     {@render children()}
   </div>
   {#if has_image()}
-    <svelte:element this={wrap_element} data-smiz-ghost="">
-      <button
-        aria-label={label_btn_zoom}
-        data-smiz-btn-zoom=""
-        type="button"
-        onclick={handle_zoom}
-      >
-        <IconZoom />
-      </button>
-    </svelte:element>
     <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_noninteractive_element_interactions -->
     <dialog
       aria-labelledby={id_modal_img}
