@@ -206,8 +206,6 @@ const get_img_regular_style: GetImgRegularStyle = ({
 
 interface GetStyleModalImg {
   (data: {
-    has_zoom_img: boolean,
-    img_src: string | undefined,
     is_zoomed: boolean,
     loaded_img_el: HTMLImageElement | null,
     offset: number,
@@ -216,15 +214,13 @@ interface GetStyleModalImg {
 }
 
 export const get_style_modal_img: GetStyleModalImg = ({
-  has_zoom_img,
-  img_src,
   is_zoomed,
   loaded_img_el,
   offset,
   target_el
 }) => {
   const img_rect = target_el.getBoundingClientRect()
-  const target_el_computed_style = window.getComputedStyle(target_el)
+  // const target_el_computed_style = window.getComputedStyle(target_el)
 
   const style_img_regular = get_img_regular_style({
     container_height: img_rect.height,

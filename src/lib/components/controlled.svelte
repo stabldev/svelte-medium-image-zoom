@@ -48,17 +48,16 @@
   // ==================================================
 
   let {
-    a11yNameButtonUnzoom = 'Expand image',
-    a11yNameButtonZoom = 'Minimize image',
+    a11yNameButtonUnzoom: a11y_name_button_unzoom = 'Expand image',
+    a11yNameButtonZoom: a11y_name_button_zoom = 'Minimize image',
     children,
-    dialogClass,
+    dialogClass: dialog_class,
     IconUnzoom = ICompress,
     IconZoom = IEnlarge,
-    isZoomed = false,
-    onZoomChange,
-    wrapElement = 'div',
-    zoomImg,
-    zoomMargin = 0
+    isZoomed: is_zoomed = false,
+    onZoomChange: on_zoom_change,
+    wrapElement: wrap_element = 'div',
+    zoomMargin: zoom_margin = 0
   }: ControlledProps = $props();
 
   let _id = $state('');
@@ -72,13 +71,11 @@
   let ref_modal_img = $state<Nullable<HTMLImageElement>>(null);
 
   let prev_body_attrs = $state(default_body_attrs);
-
   let timeout_transition_end = $state<ReturnType<typeof setTimeout> | undefined>();
 
   const id_modal = $derived(`smiz-modal-${_id}`);
   const id_modal_img = $derived(`smiz-modal-img-${_id}`);
 
-  const has_zoom_img = $derived(!!zoomImg?.src);
   const is_modal_active = $derived(
     modal_state === ModalState.LOADING || modal_state === ModalState.LOADED
   );
@@ -96,10 +93,10 @@
   const img_srcset = $derived(test_img(img_el) ? img_el.srcset : undefined);
 
   const label_btn_zoom = $derived(
-    img_alt ? `${a11yNameButtonZoom}: ${img_alt}` : a11yNameButtonZoom
+    img_alt ? `${a11y_name_button_zoom}: ${img_alt}` : a11y_name_button_zoom
   );
   const label_btn_unzoom = $derived(
-    img_alt ? `${a11yNameButtonUnzoom}: ${img_alt}` : a11yNameButtonUnzoom
+    img_alt ? `${a11y_name_button_unzoom}: ${img_alt}` : a11y_name_button_unzoom
   );
 
   const style_content = $derived(
@@ -109,11 +106,9 @@
   const style_modal_img_obj = $derived(
     has_image()
       ? get_style_modal_img({
-          has_zoom_img,
-          img_src,
-          is_zoomed: isZoomed! && is_modal_active, // TODO: fix this later
+          is_zoomed: is_zoomed! && is_modal_active, // TODO: fix this later
           loaded_img_el,
-          offset: zoomMargin,
+          offset: zoom_margin,
           target_el: img_el as SupportedImage
         })
       : {}
@@ -146,9 +141,9 @@
 
   // handle isZoomed changes
   $effect(() => {
-    if (isZoomed && modal_state === ModalState.UNLOADED) {
+    if (is_zoomed && modal_state === ModalState.UNLOADED) {
       untrack(() => zoom());
-    } else if (!isZoomed && modal_state === ModalState.LOADED) {
+    } else if (!is_zoomed && modal_state === ModalState.LOADED) {
       untrack(() => unzoom());
     }
   });
@@ -223,17 +218,17 @@
   /**
    * Report that zooming should occur
    */
-  function handleZoom() {
+  function handle_zoom() {
     if (has_image()) {
-      onZoomChange?.(true);
+      on_zoom_change?.(true);
     }
   }
 
   /**
    * Report that unzooming should occur
    */
-  function handleUnzoom() {
-    onZoomChange?.(false);
+  function handle_unzoom() {
+    on_zoom_change?.(false);
   }
 
   /**
@@ -310,12 +305,12 @@
   }
 </script>
 
-<svelte:element this={wrapElement} aria-owns={id_modal} data-smiz="">
+<svelte:element this={wrap_element} aria-owns={id_modal} data-smiz="">
   <div data-smiz-content={data_content_state} bind:this={ref_content} style={style_content}>
     {@render children()}
   </div>
   {#if has_image()}
-    <svelte:element this={wrapElement} data-smiz-ghost="">
+    <svelte:element this={wrap_element} data-smiz-ghost="">
       <button aria-label={label_btn_zoom} data-smiz-btn-zoom="" type="button">
         <IconZoom />
       </button>
@@ -323,7 +318,7 @@
     <dialog
       aria-labelledby={id_modal_img}
       aria-modal="true"
-      class={dialogClass}
+      class={dialog_class}
       data-smiz-modal=""
       id={id_modal}
       bind:this={ref_dialog}
@@ -343,7 +338,7 @@
           height={style_modal_img_obj.height}
           bind:this={ref_modal_img}
         />
-        <button aria-label={a11yNameButtonUnzoom} data-smiz-btn-unzoom="" type="button">
+        <button aria-label={a11y_name_button_unzoom} data-smiz-btn-unzoom="" type="button">
           <IconUnzoom />
         </button>
       </div>

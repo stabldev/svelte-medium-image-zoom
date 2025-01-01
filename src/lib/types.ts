@@ -1,5 +1,4 @@
 import type { Component, Snippet } from 'svelte';
-import type { HTMLImgAttributes } from 'svelte/elements';
 
 // ==================================================
 
@@ -24,6 +23,5 @@ export interface ControlledProps {
   isZoomed?: boolean;
   onZoomChange?: (value: boolean) => void;
   wrapElement?: 'div' | 'span';
-  zoomImg?: HTMLImgAttributes;
   zoomMargin?: number;
 }
