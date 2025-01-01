@@ -1,6 +1,8 @@
 {
   "name": "svelte-medium-image-zoom",
   "version": "0.0.1",
+  "license": "MIT",
+  "description": "Accessible medium.com-style image zoom for Svelte",
   "scripts": {
     "dev": "vite dev",
     "build": "vite build && npm run package",
@@ -14,6 +16,34 @@
     "storybook": "NODE_OPTIONS='--no-experimental-require-module' storybook dev -p 6006",
     "build-storybook": "NODE_OPTIONS='--no-experimental-require-module' storybook build"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/moonlitgrace/svelte-medium-image-zoom.git"
+  },
+  "homepage": "https://github.com/moonlitgrace/svelte-medium-image-zoom",
+  "bugs": "https://github.com/moonlitgrace/svelte-medium-image-zoom/issues",
+  "author": "moonlitgrace <moonlitgrace.gaia@gmail.com> (https://moonlitgrace.space)",
+  "contributors": [
+    "moonlitgrace <moonlitgrace.gaia@gmail.com> (https://moonlitgrace.space)"
+  ],
+  "keywords": [
+    "svelte",
+    "medium",
+    "image",
+    "zoom",
+    "image-zoom",
+    "modal",
+    "svelte-component"
+  ],
+  "tags": [
+    "svelte",
+    "medium",
+    "image",
+    "zoom",
+    "image-zoom",
+    "modal",
+    "svelte-component"
+  ],
   "files": [
     "dist",
     "!dist/**/*.test.*",
