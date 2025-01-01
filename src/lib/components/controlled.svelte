@@ -62,7 +62,6 @@
   }: ControlledProps = $props();
 
   let _id = $state('');
-  let is_zoom_img_loaded = $state(false);
   let img_el = $state<Nullable<SupportedImage>>(null);
   let loaded_img_el = $state<Nullable<HTMLImageElement>>(null);
   let modal_state = $state<IModalState>(ModalState.UNLOADED);
