@@ -11,8 +11,8 @@ permissions:
   # allow create pull-requests
   pull-requests: write
   # required for provenance
-  # id-token: write
-  # packages: write
+  id-token: write
+  packages: write
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
