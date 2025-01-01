@@ -15,8 +15,8 @@ npm install --save svelte-medium-image-zoom
 
 ```svelte
 <script lang="ts">
-  import Zoom from 'svelte-medium-image-zoom'
-  import 'svelte-medium-image-zoom/dist/styles.css'
+  import Zoom from 'svelte-medium-image-zoom';
+  import 'svelte-medium-image-zoom/dist/styles.css';
 </script>
 
 <Zoom>

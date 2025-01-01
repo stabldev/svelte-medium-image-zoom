@@ -8,13 +8,13 @@ const preview = {
       }
     },
     options: {
-      showPanel: false,
+      showPanel: false
     },
     previewTabs: {
       'storybook/docs/panel': {
-        hidden: true,
-      },
-    },
+        hidden: true
+      }
+    }
   }
 };
 
