@@ -1,4 +1,4 @@
-import type { Component, Snippet } from 'svelte';
+import type { Snippet } from 'svelte';
 
 // ==================================================
 
@@ -14,10 +14,8 @@ export interface BodyAttrs {
 }
 
 export interface ControlledProps {
-  a11yNameButtonUnzoom?: string;
   children: Snippet;
   dialogClass?: string;
-  IconUnzoom?: Component;
   isZoomed?: boolean;
   onZoomChange?: (value: boolean) => void;
   wrapElement?: 'div' | 'span';
@@ -25,4 +23,4 @@ export interface ControlledProps {
 }
 
 export interface UncontrolledProps
-  extends Omit<ControlledProps, 'isZoomed' | 'onZoomChange'> {}
+  extends Omit<ControlledProps, 'isZoomed' | 'onZoomChange'> { }

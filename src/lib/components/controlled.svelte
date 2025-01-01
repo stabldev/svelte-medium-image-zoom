@@ -12,7 +12,6 @@
   } from '$lib/utils.js';
   import { onDestroy, onMount, tick, untrack } from 'svelte';
   import { portal } from 'svelte-portal';
-  import ICompress from '$lib/components/icons/i-compress.svelte';
 
   // ==================================================
 
@@ -47,10 +46,8 @@
   // ==================================================
 
   let {
-    a11yNameButtonUnzoom: a11y_name_button_unzoom = 'Expand image',
     children,
     dialogClass: dialog_class,
-    IconUnzoom = ICompress,
     isZoomed: is_zoomed = false,
     onZoomChange: on_zoom_change,
     wrapElement: wrap_element = 'div',
@@ -404,14 +401,6 @@
           height={style_modal_img_obj.height}
           bind:this={ref_modal_img}
         />
-        <button
-          aria-label={a11y_name_button_unzoom}
-          data-smiz-btn-unzoom=""
-          type="button"
-          onclick={handle_unzoom_btn_click}
-        >
-          <IconUnzoom />
-        </button>
       </div>
     </dialog>
   {/if}
