@@ -3,4 +3,4 @@ import Controlled from './components/controlled.svelte';
 
 export default UnControlled;
 export const ControlledZoom = Controlled;
-export type { ControlledProps } from './types.js';
+export type { ControlledProps, UncontrolledProps } from './types.js';

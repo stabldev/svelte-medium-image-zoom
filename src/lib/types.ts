@@ -26,4 +26,4 @@ export interface ControlledProps {
   zoomMargin?: number;
 }
 
-export type UncontrolledProps = Omit<ControlledProps, 'isZoomed' | 'onZoomChange'>;
+export interface UncontrolledProps extends Omit<ControlledProps, 'isZoomed' | 'onZoomChange'> { };
