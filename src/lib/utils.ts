@@ -209,7 +209,7 @@ interface GetStyleModalImg {
     has_zoom_img: boolean,
     img_src: string | undefined,
     is_zoomed: boolean,
-    loaded_img_el: HTMLImageElement | undefined,
+    loaded_img_el: HTMLImageElement | null,
     offset: number,
     target_el: SupportedImage,
   }): Record<string, string>

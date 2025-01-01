@@ -1,6 +1,12 @@
 import type { Component, Snippet } from 'svelte';
 import type { HTMLImgAttributes } from 'svelte/elements';
 
+// ==================================================
+
+export type Nullable<T> = T | null;
+
+// ==================================================
+
 export type SupportedImage = HTMLImageElement;
 
 export interface BodyAttrs {

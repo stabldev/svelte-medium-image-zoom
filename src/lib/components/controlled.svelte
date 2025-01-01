@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { BodyAttrs, ControlledProps, SupportedImage } from '$lib/types.js';
+  import type { BodyAttrs, ControlledProps, Nullable, SupportedImage } from '$lib/types.js';
   import {
     generate_id,
     get_dialog_container,
@@ -10,7 +10,7 @@
     get_style_modal_img,
     style_obj_to_css_string
   } from '$lib/utils.js';
-  import { onMount, tick } from 'svelte';
+  import { onMount, tick, untrack } from 'svelte';
   import { portal } from 'svelte-portal';
   import IEnlarge from '$lib/components/icons/i-enlarge.svelte';
   import ICompress from '$lib/components/icons/i-compress.svelte';
@@ -45,14 +45,6 @@
 
   type IModalState = (typeof ModalState)[keyof typeof ModalState];
 
-  interface ControlledState {
-    id: string;
-    is_zoom_img_loaded: boolean;
-    img_el: SupportedImage | null;
-    loaded_img_el: HTMLImageElement | undefined;
-    modal_state: IModalState;
-  }
-
   // ==================================================
 
   let {
@@ -62,48 +54,47 @@
     dialogClass,
     IconUnzoom = ICompress,
     IconZoom = IEnlarge,
-    isZoomed,
+    isZoomed = false,
     onZoomChange,
     wrapElement = 'div',
     zoomImg,
     zoomMargin = 0
   }: ControlledProps = $props();
 
-  let _state: ControlledState = $state({
-    id: '',
-    is_zoom_img_loaded: false,
-    img_el: null,
-    loaded_img_el: undefined,
-    modal_state: ModalState.UNLOADED
-  });
+  let _id = $state('');
+  let is_zoom_img_loaded = $state(false);
+  let img_el = $state<Nullable<SupportedImage>>(null);
+  let loaded_img_el = $state<Nullable<HTMLImageElement>>(null);
+  let modal_state = $state<IModalState>(ModalState.UNLOADED);
 
-  let ref_content = $state<HTMLDivElement | null>(null);
-  let ref_dialog = $state<HTMLDialogElement | null>(null);
-  let ref_modal_content = $state<HTMLDivElement | null>(null);
-  let ref_modal_img = $state<HTMLImageElement | null>(null);
+  let ref_content = $state<Nullable<HTMLDivElement>>(null);
+  let ref_dialog = $state<Nullable<HTMLDialogElement>>(null);
+  let ref_modal_content = $state<Nullable<HTMLDivElement>>(null);
+  let ref_modal_img = $state<Nullable<HTMLImageElement>>(null);
 
   let prev_body_attrs = $state(default_body_attrs);
 
-  const id_modal = $derived(`smiz-modal-${_state.id}`);
-  const id_modal_img = $derived(`smiz-modal-img-${_state.id}`);
+  let timeout_transition_end = $state<ReturnType<typeof setTimeout> | undefined>();
+
+  const id_modal = $derived(`smiz-modal-${_id}`);
+  const id_modal_img = $derived(`smiz-modal-img-${_id}`);
 
   const has_zoom_img = $derived(!!zoomImg?.src);
   const is_modal_active = $derived(
-    _state.modal_state === ModalState.LOADING || _state.modal_state === ModalState.LOADED
+    modal_state === ModalState.LOADING || modal_state === ModalState.LOADED
   );
 
   const data_content_state = $derived(has_image() ? 'found' : 'not-found');
   const data_overlay_state = $derived.by(() =>
-    _state.modal_state === ModalState.UNLOADED ||
-    _state.modal_state === ModalState.UNLOADING
+    modal_state === ModalState.UNLOADED || modal_state === ModalState.UNLOADING
       ? 'hidden'
       : 'visible'
   );
 
-  const img_alt = $derived(get_img_alt(_state.img_el));
-  const img_src = $derived(get_img_src(_state.img_el));
-  const img_sizes = $derived(test_img(_state.img_el) ? _state.img_el.sizes : undefined);
-  const img_srcset = $derived(test_img(_state.img_el) ? _state.img_el.srcset : undefined);
+  const img_alt = $derived(get_img_alt(img_el));
+  const img_src = $derived(get_img_src(img_el));
+  const img_sizes = $derived(test_img(img_el) ? img_el.sizes : undefined);
+  const img_srcset = $derived(test_img(img_el) ? img_el.srcset : undefined);
 
   const label_btn_zoom = $derived(
     img_alt ? `${a11yNameButtonZoom}: ${img_alt}` : a11yNameButtonZoom
@@ -113,7 +104,7 @@
   );
 
   const style_content = $derived(
-    `visibility: ${_state.modal_state === ModalState.UNLOADED ? 'visible' : 'hidden'}`
+    `visibility: ${modal_state === ModalState.UNLOADED ? 'visible' : 'hidden'}`
   );
 
   const style_modal_img_obj = $derived(
@@ -122,15 +113,16 @@
           has_zoom_img,
           img_src,
           is_zoomed: isZoomed! && is_modal_active, // TODO: fix this later
-          loaded_img_el: _state.loaded_img_el,
+          loaded_img_el,
           offset: zoomMargin,
-          target_el: _state.img_el as SupportedImage
+          target_el: img_el as SupportedImage
         })
       : {}
   );
   const style_modal_img_string = $derived(style_obj_to_css_string(style_modal_img_obj));
 
-  $inspect(style_modal_img_obj);
+  // $inspect(style_modal_img_obj);
+  $inspect(modal_state);
 
   // ==================================================
 
@@ -139,20 +131,45 @@
     handle_img_load();
 
     // because of SSR, set a unique ID after render
-    _state.id = generate_id();
+    _id = generate_id();
+  });
+
+  // handle modal_state changes
+  $effect(() => {
+    if (modal_state === ModalState.UNLOADING) {
+      ensure_img_transition_end();
+    } else if (modal_state === ModalState.UNLOADED) {
+      untrack(() => body_scroll_enable());
+      ref_modal_img?.removeEventListener('transitionend', handle_img_transition_end);
+      ref_dialog?.close();
+    }
+  });
+
+  // handle isZoomed changes
+  $effect(() => {
+    if (isZoomed && modal_state === ModalState.UNLOADED) {
+      untrack(() => zoom());
+    } else if (!isZoomed && modal_state === ModalState.LOADED) {
+      untrack(() => unzoom());
+    }
   });
 
   // ==================================================
 
   /**
+   * Debounce modal_state updates, prevents re-triggering updates.
+   */
+  function set_modal_state(new_state: IModalState) {
+    if (modal_state !== new_state) {
+      modal_state = new_state;
+    }
+  }
+
+  /**
    * Check if we have a loaded image to work with
    */
   function has_image() {
-    return (
-      _state.img_el &&
-      _state.loaded_img_el &&
-      window.getComputedStyle(_state.img_el).display !== 'none'
-    );
+    return img_el && loaded_img_el && window.getComputedStyle(img_el).display !== 'none';
   }
 
   /**
@@ -163,7 +180,7 @@
     await tick();
 
     if (!ref_content) return;
-    _state.img_el = ref_content.querySelector(IMAGE_QUERY) as SupportedImage | null;
+    img_el = ref_content.querySelector(IMAGE_QUERY) as SupportedImage | null;
 
     // track
   }
@@ -172,16 +189,16 @@
    * Ensure we always have the latest img src value loaded
    */
   function handle_img_load() {
-    if (!_state.img_el) return;
+    if (!img_el) return;
 
-    const img_src = get_img_src(_state.img_el);
+    const img_src = get_img_src(img_el);
     if (!img_src) return;
 
     const img = new Image();
 
-    if (test_img(_state.img_el)) {
-      img.sizes = _state.img_el.sizes;
-      img.srcset = _state.img_el.srcset;
+    if (test_img(img_el)) {
+      img.sizes = img_el.sizes;
+      img.srcset = img_el.srcset;
     }
 
     // img.src must be set after sizes and srcset
@@ -189,7 +206,7 @@
     img.src = img_src;
 
     const set_loaded = () => {
-      _state.loaded_img_el = img;
+      loaded_img_el = img;
     };
 
     img
@@ -205,20 +222,36 @@
   }
 
   /**
+   * Report that zooming should occur
+   */
+  function handleZoom() {
+    if (has_image()) {
+      onZoomChange?.(true);
+    }
+  }
+
+  /**
+   * Report that unzooming should occur
+   */
+  function handleUnzoom() {
+    onZoomChange?.(false);
+  }
+
+  /**
    * Perform zooming actions
    */
   function zoom() {
     body_scroll_disable();
     ref_dialog?.showModal();
     ref_modal_img?.addEventListener('transitionend', handle_img_transition_end);
-    _state.modal_state = ModalState.LOADING;
+    set_modal_state(ModalState.LOADING);
   }
 
   /**
    * Perform unzooming actions
    */
   function unzoom() {
-    _state.modal_state = ModalState.UNLOADING;
+    set_modal_state(ModalState.UNLOADING);
   }
 
   /**
@@ -227,11 +260,28 @@
    *   - UNLOADING -> UNLOADED
    */
   function handle_img_transition_end() {
-    //
-    if (_state.modal_state === ModalState.LOADING) {
-      _state.modal_state = ModalState.LOADED;
-    } else if (_state.modal_state === ModalState.UNLOADING) {
-      _state.modal_state = ModalState.UNLOADED;
+    clearTimeout(timeout_transition_end);
+
+    if (modal_state === ModalState.LOADING) {
+      modal_state = ModalState.LOADED;
+    } else if (modal_state === ModalState.UNLOADING) {
+      modal_state = ModalState.UNLOADED;
+    }
+  }
+
+  /**
+   * Ensure handle_img_transition_end gets called. Safari can have significant
+   * delays before firing the event.
+   */
+  function ensure_img_transition_end() {
+    if (ref_modal_img) {
+      const td = window.getComputedStyle(ref_modal_img).transitionDuration;
+      const td_float = parseFloat(td);
+
+      if (td_float) {
+        const td_ms = td_float * (td.endsWith('ms') ? 1 : 1000) + 50;
+        timeout_transition_end = setTimeout(handle_img_transition_end, td_ms);
+      }
     }
   }
 
