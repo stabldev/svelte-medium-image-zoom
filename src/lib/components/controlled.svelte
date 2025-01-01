@@ -238,6 +238,15 @@
   }
 
   /**
+   * Capture click event when clicking unzoom button
+   */
+  function handle_unzoom_btn_click(e: MouseEvent) {
+    e.preventDefault();
+    e.stopPropagation();
+    handle_unzoom();
+  }
+
+  /**
    * Perform zooming actions
    */
   function zoom() {
@@ -353,7 +362,12 @@
           height={style_modal_img_obj.height}
           bind:this={ref_modal_img}
         />
-        <button aria-label={a11y_name_button_unzoom} data-smiz-btn-unzoom="" type="button">
+        <button
+          aria-label={a11y_name_button_unzoom}
+          data-smiz-btn-unzoom=""
+          type="button"
+          onclick={handle_unzoom_btn_click}
+        >
           <IconUnzoom />
         </button>
       </div>
