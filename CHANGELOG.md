@@ -1,5 +1,11 @@
 # svelte-medium-image-zoom
 
+## 0.0.4
+
+### Patch Changes
+
+- cdde13a: chore: update storybook and change provenance package-config
+
 ## 0.0.3
 
 ### Patch Changes
