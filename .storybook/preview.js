@@ -6,7 +6,15 @@ const preview = {
         color: /(background|color)$/i,
         date: /Date$/i
       }
-    }
+    },
+    options: {
+      showPanel: false,
+    },
+    previewTabs: {
+      'storybook/docs/panel': {
+        hidden: true,
+      },
+    },
   }
 };
 
