@@ -95,13 +95,6 @@
   const label_btn_zoom = $derived(
     img_alt ? `${a11y_name_button_zoom}: ${img_alt}` : a11y_name_button_zoom
   );
-  const label_btn_unzoom = $derived(
-    img_alt ? `${a11y_name_button_unzoom}: ${img_alt}` : a11y_name_button_unzoom
-  );
-
-  const style_content = $derived(
-    `visibility: ${modal_state === ModalState.UNLOADED ? 'visible' : 'hidden'}`
-  );
 
   const style_modal_img_obj = $derived(
     has_image()
@@ -115,7 +108,6 @@
   );
   const style_modal_img_string = $derived(style_obj_to_css_string(style_modal_img_obj));
 
-  // $inspect(style_modal_img_obj);
   $inspect(modal_state);
 
   // ==================================================
@@ -306,7 +298,11 @@
 </script>
 
 <svelte:element this={wrap_element} aria-owns={id_modal} data-smiz="">
-  <div data-smiz-content={data_content_state} bind:this={ref_content} style={style_content}>
+  <div
+    data-smiz-content={data_content_state}
+    bind:this={ref_content}
+    style="visibility: {modal_state === ModalState.UNLOADED ? 'visible' : 'hidden'};"
+  >
     {@render children()}
   </div>
   {#if has_image()}
