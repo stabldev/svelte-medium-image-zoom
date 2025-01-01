@@ -2,20 +2,12 @@
 const preview = {
   parameters: {
     controls: {
-      matchers: {
-        color: /(background|color)$/i,
-        date: /Date$/i
-      }
+      disable: true,
     },
-    options: {
-      showPanel: false
+    actions: {
+      disable: true,
     },
-    previewTabs: {
-      'storybook/docs/panel': {
-        hidden: true
-      }
-    }
-  }
+  },
 };
 
 export default preview;

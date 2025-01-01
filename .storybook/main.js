@@ -4,7 +4,6 @@ const config = {
   addons: [
     '@storybook/addon-svelte-csf',
     '@storybook/addon-essentials',
-    '@chromatic-com/storybook',
     '@storybook/addon-interactions'
   ],
   framework: {
