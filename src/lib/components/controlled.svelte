@@ -10,7 +10,7 @@
     get_style_modal_img,
     style_obj_to_css_string
   } from '$lib/utils.js';
-  import { onMount, tick, untrack } from 'svelte';
+  import { onDestroy, onMount, tick, untrack } from 'svelte';
   import { portal } from 'svelte-portal';
   import IEnlarge from '$lib/components/icons/i-enlarge.svelte';
   import ICompress from '$lib/components/icons/i-compress.svelte';
@@ -120,6 +120,11 @@
     _id = generate_id();
   });
 
+  onDestroy(() => {
+    img_el?.removeEventListener('load', handle_img_load);
+    img_el?.removeEventListener('click', handle_zoom);
+  });
+
   // handle modal_state changes
   $effect(() => {
     if (modal_state === ModalState.UNLOADING) {
@@ -167,6 +172,15 @@
 
     if (!ref_content) return;
     img_el = ref_content.querySelector(IMAGE_QUERY) as SupportedImage | null;
+
+    if (img_el) {
+      img_el.addEventListener('load', handle_img_load);
+      img_el.addEventListener('click', handle_zoom);
+
+      if (!loaded_img_el) {
+        handle_img_load();
+      }
+    }
 
     // track
   }
@@ -307,7 +321,12 @@
   </div>
   {#if has_image()}
     <svelte:element this={wrap_element} data-smiz-ghost="">
-      <button aria-label={label_btn_zoom} data-smiz-btn-zoom="" type="button">
+      <button
+        aria-label={label_btn_zoom}
+        data-smiz-btn-zoom=""
+        type="button"
+        onclick={handle_zoom}
+      >
         <IconZoom />
       </button>
     </svelte:element>

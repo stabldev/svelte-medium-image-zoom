@@ -25,3 +25,5 @@ export interface ControlledProps {
   wrapElement?: 'div' | 'span';
   zoomMargin?: number;
 }
+
+export type UncontrolledProps = Omit<ControlledProps, 'isZoomed' | 'onZoomChange'>;
