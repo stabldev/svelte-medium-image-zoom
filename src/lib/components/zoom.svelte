@@ -47,47 +47,35 @@
 
   let {
     children,
-    dialogClass: dialog_class,
-    isZoomed: is_zoomed,
-    onZoomChange: on_zoom_change,
-    wrapElement: wrap_element = 'div',
-    zoomMargin: zoom_margin = 0
+    dialog_class,
+    is_zoomed,
+    on_zoom_change,
+    wrap_element = 'div',
+    zoom_margin = 0
   }: ZoomProps = $props();
-
-  // ==================================================
 
   let _id = $state('');
   let img_el = $state<Nullable<SupportedImage>>(null);
   let loaded_img_el = $state<Nullable<HTMLImageElement>>(null);
   let modal_state = $state<IModalState>(ModalState.UNLOADED);
 
-  // ==================================================
-
   let ref_content = $state<Nullable<HTMLDivElement>>(null);
   let ref_dialog = $state<Nullable<HTMLDialogElement>>(null);
   let ref_modal_content = $state<Nullable<HTMLDivElement>>(null);
   let ref_modal_img = $state<Nullable<HTMLImageElement>>(null);
 
-  // ==================================================
-
   let is_zoomed_internal = $state(false); // for uncontrolled-mode
   // controlled or uncontrolled-mode
-  const zoomed = $derived(is_zoomed ?? is_zoomed_internal);
-
-  // ==================================================
+  const _is_zoomed = $derived(is_zoomed ?? is_zoomed_internal);
 
   let prev_body_attrs = $state(default_body_attrs);
   let timeout_transition_end = $state<ReturnType<typeof setTimeout> | undefined>();
 
-  // ==================================================
-
   const id_modal = $derived(`smiz-modal-${_id}`);
   const id_modal_img = $derived(`smiz-modal-img-${_id}`);
-  const is_modal_active = $derived(
-    modal_state === ModalState.LOADING || modal_state === ModalState.LOADED
+  const is_modal_active = $derived.by(
+    () => modal_state === ModalState.LOADING || modal_state === ModalState.LOADED
   );
-
-  // ==================================================
 
   const data_content_state = $derived(has_image() ? 'found' : 'not-found');
   const data_overlay_state = $derived.by(() =>
@@ -96,26 +84,22 @@
       : 'visible'
   );
 
-  // ==================================================
-
   const img_alt = $derived(get_img_alt(img_el));
   const img_src = $derived(get_img_src(img_el));
-  const img_sizes = $derived(test_img(img_el) ? img_el.sizes : undefined);
-  const img_srcset = $derived(test_img(img_el) ? img_el.srcset : undefined);
 
-  // ==================================================
-
-  const style_modal_img_obj = $derived(
+  const style_modal_img_obj = $derived.by(() =>
     has_image()
       ? get_style_modal_img({
-          is_zoomed: zoomed && is_modal_active,
+          is_zoomed: _is_zoomed && is_modal_active,
           loaded_img_el,
           offset: zoom_margin,
           target_el: img_el as SupportedImage
         })
       : {}
   );
-  const style_modal_img_string = $derived(style_obj_to_css_string(style_modal_img_obj));
+  const style_modal_img_string = $derived.by(() =>
+    style_obj_to_css_string(style_modal_img_obj)
+  );
 
   // ==================================================
 
@@ -153,9 +137,9 @@
 
   // handle isZoomed changes
   $effect(() => {
-    if (zoomed && modal_state === ModalState.UNLOADED) {
+    if (_is_zoomed && modal_state === ModalState.UNLOADED) {
       untrack(() => zoom());
-    } else if (!zoomed && modal_state === ModalState.LOADED) {
+    } else if (!_is_zoomed && modal_state === ModalState.LOADED) {
       untrack(() => unzoom());
     }
   });
@@ -423,8 +407,8 @@
         <img
           alt={img_alt}
           src={img_src}
-          srcset={img_srcset}
-          sizes={img_sizes}
+          srcset={img_el?.srcset}
+          sizes={img_el?.sizes}
           data-smiz-modal-img=""
           id={id_modal_img}
           style={style_modal_img_string}

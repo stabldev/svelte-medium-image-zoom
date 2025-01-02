@@ -3,15 +3,15 @@
   import '$lib/styles.css';
   import { img_that_wanaka_tree } from '../stories/assets/index.js';
 
-  let zoomed = $state(false);
+  let is_zoomed = $state(false);
 </script>
 
 <h1 style="font-family: monospace;">svelte-medium-image-zoom</h1>
 <Zoom
-  isZoomed={zoomed}
-  onZoomChange={(z) => (zoomed = z)}
-  wrapElement="span"
-  zoomMargin={50}
+  {is_zoomed}
+  on_zoom_change={(z) => (is_zoomed = z)}
+  wrap_element="span"
+  zoom_margin={50}
 >
   <img alt={img_that_wanaka_tree.alt} src={img_that_wanaka_tree.src} width="500" />
 </Zoom>

@@ -15,9 +15,9 @@ export interface BodyAttrs {
 
 export interface ZoomProps {
   children: Snippet;
-  dialogClass?: string;
-  isZoomed?: boolean;
-  onZoomChange?: (value: boolean) => void;
-  wrapElement?: 'div' | 'span';
-  zoomMargin?: number;
+  dialog_class?: string;
+  is_zoomed?: boolean;
+  on_zoom_change?: (value: boolean) => void;
+  wrap_element?: 'div' | 'span';
+  zoom_margin?: number;
 }

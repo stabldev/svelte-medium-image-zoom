@@ -26,7 +26,7 @@
     <h1>Setting a zoomMargin of 45(px)</h1>
     <div class="max-w-60">
       <p>This example should always be offset from the window by at least 45px</p>
-      <Zoom zoomMargin={45}>
+      <Zoom zoom_margin={45}>
         <img alt={img_that_wanaka_tree.alt} src={img_that_wanaka_tree.src} width="500" />
       </Zoom>
     </div>
