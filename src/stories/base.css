@@ -33,3 +33,28 @@ input,
 button {
   -webkit-font-smoothing: antialiased;
 }
+
+figure {
+  margin: 0;
+}
+
+h1 {
+  line-height: initial;
+}
+
+h2 {
+  margin-top: 4rem;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+.display-none {
+  display: none;
+}
+
+.max-w-60 {
+  max-width: 60rem;
+}
