@@ -13,14 +13,11 @@ export interface BodyAttrs {
   width: string;
 }
 
-export interface ControlledProps {
+export interface ZoomProps {
   children: Snippet;
   dialogClass?: string;
-  isZoomed: boolean;
+  isZoomed?: boolean;
   onZoomChange?: (value: boolean) => void;
   wrapElement?: 'div' | 'span';
   zoomMargin?: number;
 }
-
-export interface UncontrolledProps
-  extends Omit<ControlledProps, 'isZoomed' | 'onZoomChange'> {}
