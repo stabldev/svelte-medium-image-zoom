@@ -89,7 +89,7 @@
   const style_modal_img_obj = $derived(
     has_image()
       ? get_style_modal_img({
-          is_zoomed: is_zoomed! && is_modal_active, // TODO: fix this later
+          is_zoomed: is_zoomed && is_modal_active,
           loaded_img_el,
           offset: zoom_margin,
           target_el: img_el as SupportedImage
@@ -97,8 +97,6 @@
       : {}
   );
   const style_modal_img_string = $derived(style_obj_to_css_string(style_modal_img_obj));
-
-  $inspect(modal_state);
 
   // ==================================================
 

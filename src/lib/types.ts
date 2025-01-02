@@ -16,7 +16,7 @@ export interface BodyAttrs {
 export interface ControlledProps {
   children: Snippet;
   dialogClass?: string;
-  isZoomed?: boolean;
+  isZoomed: boolean;
   onZoomChange?: (value: boolean) => void;
   wrapElement?: 'div' | 'span';
   zoomMargin?: number;
