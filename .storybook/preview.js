@@ -2,12 +2,12 @@
 const preview = {
   parameters: {
     controls: {
-      disable: true,
+      disable: true
     },
     actions: {
-      disable: true,
-    },
-  },
+      disable: true
+    }
+  }
 };
 
 export default preview;
