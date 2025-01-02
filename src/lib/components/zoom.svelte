@@ -53,8 +53,8 @@
     a11y_name_button_zoom = 'Expand image',
     children,
     dialog_class,
-    IconUnzoom = ICompress,
-    IconZoom = IEnlarge,
+    icon_unzoom,
+    icon_zoom,
     is_zoomed,
     on_zoom_change,
     wrap_element = 'div',
@@ -408,7 +408,11 @@
         onclick={handle_zoom}
         type="button"
       >
-        <IconZoom />
+        {#if icon_zoom}
+          {@render icon_zoom()}
+        {:else}
+          <IEnlarge />
+        {/if}
       </button>
     </svelte:element>
     <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_noninteractive_element_interactions -->
@@ -444,7 +448,11 @@
           onclick={handle_unzoom_btn_click}
           type="button"
         >
-          <IconUnzoom />
+          {#if icon_unzoom}
+            {@render icon_unzoom()}
+          {:else}
+            <ICompress />
+          {/if}
         </button>
       </div>
     </dialog>

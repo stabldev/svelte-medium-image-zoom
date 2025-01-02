@@ -1,4 +1,4 @@
-import type { Component, Snippet } from 'svelte';
+import type { Snippet } from 'svelte';
 
 // ==================================================
 
@@ -18,8 +18,8 @@ export interface ZoomProps {
   a11y_name_button_zoom?: string;
   children: Snippet;
   dialog_class?: string;
-  IconUnzoom?: Component;
-  IconZoom?: Component;
+  icon_unzoom?: Snippet;
+  icon_zoom?: Snippet;
   is_zoomed?: boolean;
   on_zoom_change?: (value: boolean) => void;
   wrap_element?: 'div' | 'span';
