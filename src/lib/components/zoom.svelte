@@ -12,6 +12,8 @@
   } from '$lib/utils.js';
   import { onDestroy, onMount, tick, untrack } from 'svelte';
   import { portal } from 'svelte-portal';
+  import ICompress from './icons/i-compress.svelte';
+  import IEnlarge from './icons/i-enlarge.svelte';
 
   // ==================================================
 
@@ -46,8 +48,12 @@
   // ==================================================
 
   let {
+    a11y_name_button_unzoom = 'Minimize image',
+    a11y_name_button_zoom = 'Expand image',
     children,
     dialog_class,
+    IconUnzoom = ICompress,
+    IconZoom = IEnlarge,
     is_zoomed,
     on_zoom_change,
     wrap_element = 'div',
@@ -86,6 +92,10 @@
 
   const img_alt = $derived(get_img_alt(img_el));
   const img_src = $derived(get_img_src(img_el));
+
+  const label_btn_zoom = $derived.by(() =>
+    img_alt ? `${a11y_name_button_zoom}: ${img_alt}` : a11y_name_button_zoom
+  );
 
   const style_modal_img_obj = $derived.by(() =>
     has_image()
@@ -251,11 +261,11 @@
   /**
    * Capture click event when clicking unzoom button
    */
-  // function handle_unzoom_btn_click(e: MouseEvent) {
-  //   e.preventDefault();
-  //   e.stopPropagation();
-  //   handle_unzoom();
-  // }
+  function handle_unzoom_btn_click(e: MouseEvent) {
+    e.preventDefault();
+    e.stopPropagation();
+    handle_unzoom();
+  }
 
   /**
    * Prevent the browser from removing the dialog on Escape
@@ -389,6 +399,16 @@
     {@render children()}
   </div>
   {#if has_image()}
+    <svelte:element this={wrap_element} data-smiz-ghost="">
+      <button
+        aria-label={label_btn_zoom}
+        data-smiz-btn-zoom=""
+        onclick={handle_zoom}
+        type="button"
+      >
+        <IconZoom />
+      </button>
+    </svelte:element>
     <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_noninteractive_element_interactions -->
     <dialog
       aria-labelledby={id_modal_img}
@@ -416,6 +436,14 @@
           height={style_modal_img_obj.height}
           bind:this={ref_modal_img}
         />
+        <button
+          aria-label={a11y_name_button_unzoom}
+          data-smiz-btn-unzoom=""
+          onclick={handle_unzoom_btn_click}
+          type="button"
+        >
+          <IconUnzoom />
+        </button>
       </div>
     </dialog>
   {/if}
