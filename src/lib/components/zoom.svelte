@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { BodyAttrs, ControlledProps, Nullable, SupportedImage } from '$lib/types.js';
+  import type { BodyAttrs, Nullable, SupportedImage, ZoomProps } from '$lib/types.js';
   import {
     generate_id,
     get_dialog_container,
@@ -52,7 +52,7 @@
     onZoomChange: on_zoom_change,
     wrapElement: wrap_element = 'div',
     zoomMargin: zoom_margin = 0
-  }: ControlledProps = $props();
+  }: ZoomProps = $props();
 
   let _id = $state('');
   let img_el = $state<Nullable<SupportedImage>>(null);
