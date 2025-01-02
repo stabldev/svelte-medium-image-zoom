@@ -76,11 +76,13 @@ export const get_img_alt: GetImgAlt = (img_el) => {
 
 // ==================================================
 
-interface GetScaleToWindow {
-  (data: { width: number; height: number; offset: number }): number;
+interface ScaleToWindowParams {
+  width: number;
+  height: number;
+  offset: number;
 }
 
-const get_scale_to_window: GetScaleToWindow = ({ height, offset, width }) => {
+const get_scale_to_window = ({ height, offset, width }: ScaleToWindowParams): number => {
   return Math.min(
     (window.innerWidth - offset * 2) / width, // scale X-axis
     (window.innerHeight - offset * 2) / height // scale Y-axis
@@ -89,104 +91,76 @@ const get_scale_to_window: GetScaleToWindow = ({ height, offset, width }) => {
 
 // ==================================================
 
-interface GetScaleToWindowMax {
-  (data: {
-    container_height: number;
-    container_width: number;
-    offset: number;
-    target_height: number;
-    target_width: number;
-  }): number;
+interface ScaleToWindowMaxParams extends ScaleToWindowParams {
+  container_height: number;
+  container_width: number;
 }
 
-const get_scale_to_window_max: GetScaleToWindowMax = ({
+const get_scale_to_window_max = ({
   container_height,
   container_width,
-  offset,
-  target_height,
-  target_width
-}) => {
+  height,
+  width,
+  offset
+}: ScaleToWindowMaxParams): number => {
   const scale = get_scale_to_window({
-    height: target_height,
-    offset,
-    width: target_width
+    height,
+    width,
+    offset
   });
 
-  const ratio =
-    target_width > target_height
-      ? target_width / container_width
-      : target_height / container_height;
+  // gets ratio to ensure scaling respects the container
+  const ratio = Math.max(width / container_width, height / container_height);
 
   return scale > 1 ? ratio : scale * ratio;
 };
 
 // ==================================================
 
-interface GetScale {
-  (data: {
-    container_height: number;
-    container_width: number;
-    offset: number;
-    target_height: number;
-    target_width: number;
-  }): number;
-}
+interface ScaleParams extends ScaleToWindowMaxParams {}
 
-const get_scale: GetScale = ({
+const get_scale = ({
   container_height,
   container_width,
-  offset,
-  target_height,
-  target_width
-}) => {
+  height,
+  width,
+  offset
+}: ScaleParams): number => {
   if (!container_height || !container_width) {
     return 1;
   }
 
-  return target_height && target_width
-    ? get_scale_to_window_max({
-        container_height,
-        container_width,
-        offset,
-        target_height,
-        target_width
-      })
-    : get_scale_to_window({
-        height: container_height,
-        offset,
-        width: container_width
-      });
+  return get_scale_to_window_max({
+    container_height,
+    container_width,
+    height,
+    width,
+    offset
+  });
 };
 
 // ==================================================
 
-interface GetImgRegularStyle {
-  (data: {
-    container_height: number;
-    container_left: number;
-    container_top: number;
-    container_width: number;
-    offset: number;
-    target_height: number;
-    target_width: number;
-  }): Record<string, string>;
+interface RegularStyleParams extends ScaleParams {
+  container_left: number;
+  container_top: number;
 }
 
-const get_img_regular_style: GetImgRegularStyle = ({
+const get_img_regular_style = ({
   container_height,
   container_left,
   container_top,
   container_width,
-  offset,
-  target_height,
-  target_width
-}) => {
+  height,
+  width,
+  offset
+}: RegularStyleParams): Record<string, string> => {
   const scale = get_scale({
     container_height: container_height,
     container_width: container_width,
-    offset,
-    target_height: target_height,
-    target_width: target_width
+    height,
+    width,
+    offset
   });
 
   return {
@@ -200,32 +174,33 @@ const get_img_regular_style: GetImgRegularStyle = ({
 
 // ==================================================
 
-interface GetStyleModalImg {
-  (data: {
-    is_zoomed: boolean;
-    loaded_img_el: HTMLImageElement | null;
-    offset: number;
-    target_el: SupportedImage;
-  }): Record<string, string>;
+interface ModalImgStyleParams {
+  is_zoomed: boolean;
+  loaded_img_el: HTMLImageElement | null;
+  offset: number;
+  target_el: SupportedImage;
 }
 
-export const get_style_modal_img: GetStyleModalImg = ({
+export const get_style_modal_img = ({
   is_zoomed,
   loaded_img_el,
   offset,
   target_el
-}) => {
+}: ModalImgStyleParams): Record<string, string> => {
   const img_rect = target_el.getBoundingClientRect();
   // const target_el_computed_style = window.getComputedStyle(target_el)
+
+  const width = loaded_img_el?.naturalWidth || img_rect.width;
+  const height = loaded_img_el?.naturalHeight || img_rect.height;
 
   const style_img_regular = get_img_regular_style({
     container_height: img_rect.height,
     container_width: img_rect.width,
     container_top: img_rect.top,
     container_left: img_rect.left,
-    offset,
-    target_height: loaded_img_el?.naturalHeight || img_rect.height,
-    target_width: loaded_img_el?.naturalWidth || img_rect.width
+    height,
+    width,
+    offset
   });
 
   const style = Object.assign({}, style_img_regular);
