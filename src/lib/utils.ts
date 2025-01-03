@@ -117,7 +117,7 @@ const get_scale_to_window_max = ({
 
 // ==================================================
 
-interface ScaleParams extends ScaleToWindowMaxParams {}
+interface ScaleParams extends ScaleToWindowMaxParams { }
 
 const get_scale = ({
   container_height,
@@ -179,13 +179,15 @@ interface ModalImgStyleParams {
   loaded_img_el: HTMLImageElement | null;
   offset: number;
   target_el: SupportedImage;
+  should_refresh: boolean;
 }
 
 export const get_style_modal_img = ({
   is_zoomed,
   loaded_img_el,
   offset,
-  target_el
+  target_el,
+  should_refresh
 }: ModalImgStyleParams): Record<string, string> => {
   const img_rect = target_el.getBoundingClientRect();
   // const target_el_computed_style = window.getComputedStyle(target_el)
@@ -216,6 +218,11 @@ export const get_style_modal_img = ({
 
     const translate_x = viewport_x - child_center_x;
     const translate_y = viewport_y - child_center_y;
+
+    // for scenarios like resizing the browser window
+    if (should_refresh) {
+      style['transition-duration'] = '0.01ms';
+    }
 
     style.transform = `translate(${translate_x}px,${translate_y}px) scale(1)`;
   }
