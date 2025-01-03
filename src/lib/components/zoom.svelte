@@ -79,6 +79,7 @@
 
   let prev_body_attrs = $state(default_body_attrs);
   let timeout_transition_end = $state<ReturnType<typeof setTimeout> | undefined>();
+  let img_el_resize_observer = $state<ResizeObserver>();
 
   const id_modal = $derived(`smiz-modal-${_id}`);
   const id_modal_img = $derived(`smiz-modal-img-${_id}`);
@@ -106,7 +107,8 @@
           is_zoomed: _is_zoomed && is_modal_active,
           loaded_img_el,
           offset: zoom_margin,
-          target_el: img_el as SupportedImage
+          target_el: img_el as SupportedImage,
+          should_refresh
         })
       : {}
   );
@@ -128,6 +130,7 @@
     img_el?.removeEventListener('load', handle_img_load);
     img_el?.removeEventListener('click', handle_zoom);
     ref_modal_img?.removeEventListener('transitionend', handle_img_transition_end);
+    img_el_resize_observer?.disconnect();
 
     if (browser) {
       window.removeEventListener('resize', handle_resize);
@@ -201,9 +204,20 @@
       if (!loaded_img_el) {
         handle_img_load();
       }
-    }
 
-    // track
+      img_el_resize_observer?.observe(img_el);
+      img_el_resize_observer = new ResizeObserver((entries) => {
+        const entry = entries[0];
+
+        if (entry.target) {
+          img_el = entry.target as SupportedImage;
+          // Update ghost and force a re-render.
+          // Always force a re-render here, even if we remove
+          // all state changes. Pass `{}` in that case.
+          style_ghost = get_style_ghost(img_el);
+        }
+      });
+    }
   }
 
   /**
@@ -334,6 +348,7 @@
    */
   function handle_resize() {
     should_refresh = true;
+    tick().then(() => (should_refresh = false));
   }
 
   /**
@@ -374,6 +389,7 @@
    * delays before firing the event.
    */
   function ensure_img_transition_end() {
+    console.log('called');
     if (ref_modal_img) {
       const td = window.getComputedStyle(ref_modal_img).transitionDuration;
       const td_float = parseFloat(td);
