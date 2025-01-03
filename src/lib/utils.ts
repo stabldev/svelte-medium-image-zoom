@@ -117,26 +117,35 @@ const get_scale_to_window_max = ({
 
 // ==================================================
 
-interface ScaleParams extends ScaleToWindowMaxParams { }
+interface ScaleParams extends ScaleToWindowMaxParams {
+  has_scalable_src: boolean;
+}
 
 const get_scale = ({
   container_height,
   container_width,
   height,
   width,
-  offset
+  offset,
+  has_scalable_src
 }: ScaleParams): number => {
   if (!container_height || !container_width) {
     return 1;
   }
 
-  return get_scale_to_window_max({
-    container_height,
-    container_width,
-    height,
-    width,
-    offset
-  });
+  return !has_scalable_src && height && width
+    ? get_scale_to_window_max({
+      container_height,
+      container_width,
+      height,
+      width,
+      offset
+    })
+    : get_scale_to_window({
+      height: container_height,
+      width: container_width,
+      offset
+    });
 };
 
 // ==================================================
@@ -153,14 +162,16 @@ const get_img_regular_style = ({
   container_width,
   height,
   width,
-  offset
+  offset,
+  has_scalable_src
 }: RegularStyleParams): Record<string, string> => {
   const scale = get_scale({
     container_height: container_height,
     container_width: container_width,
     height,
     width,
-    offset
+    offset,
+    has_scalable_src
   });
 
   return {
@@ -174,12 +185,15 @@ const get_img_regular_style = ({
 
 // ==================================================
 
+const SRC_SVG_REGEX = /\.svg$/i
+
 interface ModalImgStyleParams {
   is_zoomed: boolean;
   loaded_img_el: HTMLImageElement | null;
   offset: number;
   target_el: SupportedImage;
   should_refresh: boolean;
+  img_src: string | undefined;
 }
 
 export const get_style_modal_img = ({
@@ -187,8 +201,14 @@ export const get_style_modal_img = ({
   loaded_img_el,
   offset,
   target_el,
-  should_refresh
+  should_refresh,
+  img_src
 }: ModalImgStyleParams): Record<string, string> => {
+  const has_scalable_src =
+    img_src?.slice?.(0, 18) === 'data:image/svg+xml' ||
+    !!(img_src && SRC_SVG_REGEX.test(img_src))
+
+
   const img_rect = target_el.getBoundingClientRect();
   // const target_el_computed_style = window.getComputedStyle(target_el)
 
@@ -202,7 +222,8 @@ export const get_style_modal_img = ({
     container_left: img_rect.left,
     height,
     width,
-    offset
+    offset,
+    has_scalable_src
   });
 
   const style = Object.assign({}, style_img_regular);

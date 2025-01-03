@@ -58,3 +58,22 @@ img {
 .max-w-60 {
   max-width: 60rem;
 }
+
+.change-icons[data-smiz-btn-zoom] {
+  bottom: 10px;
+  top: initial;
+}
+
+.change-icons[data-smiz-btn-zoom],
+.change-icons[data-smiz-btn-unzoom] {
+  align-items: center;
+  background-color: #fff;
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0.8);
+  color: #000;
+  display: flex;
+  font-family: monospace;
+  font-size: 2rem;
+  height: 3rem;
+  justify-content: center;
+  width: 3rem;
+}

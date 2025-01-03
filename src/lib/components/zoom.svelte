@@ -53,7 +53,9 @@
     a11y_name_button_unzoom = 'Minimize image',
     a11y_name_button_zoom = 'Expand image',
     children,
-    dialog_class,
+    class_dialog,
+    class_button_unzoom,
+    class_button_zoom,
     icon_unzoom,
     icon_zoom,
     is_zoomed,
@@ -108,7 +110,8 @@
           loaded_img_el,
           offset: zoom_margin,
           target_el: img_el as SupportedImage,
-          should_refresh
+          should_refresh,
+          img_src
         })
       : {}
   );
@@ -186,6 +189,8 @@
   function has_image() {
     return img_el && loaded_img_el && window.getComputedStyle(img_el).display !== 'none';
   }
+
+  // ==================================================
 
   /**
    * Find and set the image we're working with
@@ -441,6 +446,7 @@
         data-smiz-btn-zoom=""
         onclick={handle_zoom}
         type="button"
+        class={class_button_zoom}
       >
         {#if icon_zoom}
           {@render icon_zoom()}
@@ -453,7 +459,7 @@
     <dialog
       aria-labelledby={id_modal_img}
       aria-modal="true"
-      class={dialog_class}
+      class={class_dialog}
       data-smiz-modal=""
       id={id_modal}
       bind:this={ref_dialog}
@@ -481,6 +487,7 @@
           data-smiz-btn-unzoom=""
           onclick={handle_unzoom_btn_click}
           type="button"
+          class={class_button_unzoom}
         >
           {#if icon_unzoom}
             {@render icon_unzoom()}
