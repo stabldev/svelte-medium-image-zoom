@@ -116,6 +116,50 @@
   </main>
 </Story>
 
+<Story name="Custom Modal Styles">
+  <main aria-label="Story" class="max-w-60">
+    <h1>Custom Modal Styles</h1>
+    <p>Use CSS to customize the zoom modal styles.</p>
+    <p>Here, we slow down the transition time and use a different overlay color.</p>
+    <Zoom class_dialog="custom-zoom">
+      <img
+        alt={img_glenorchy_lagoon.alt}
+        src={img_glenorchy_lagoon.src}
+        width="400"
+        decoding="async"
+        loading="lazy"
+      />
+    </Zoom>
+    <p>
+      The CSS class, <code>custom-zoom</code>, is sent to the component via the
+      <code>classDialog</code> string prop. Here are the styles used:
+    </p>
+    <pre>
+          <code>
+{`.custom-zoom [data-smiz-modal-overlay],
+.custom-zoom [data-smiz-modal-img] {
+  transition-duration: 0.8s;
+  transition-timing-function: linear;
+}
+.custom-zoom [data-smiz-modal-overlay="hidden"] {
+  background-color: rgb(56, 58, 89, 0);
+}
+.custom-zoom [data-smiz-modal-overlay="visible"] {
+  background-color: rgb(56, 58, 89, 1);
+}
+.custom-zoom [data-smiz-btn-unzoom] {
+  background-color: #bd93f9;
+  color: #000;
+}
+.custom-zoom [data-smiz-btn-unzoom]:focus-visible {
+  outline-offset: 0.4rem;
+  outline: 0.2rem solid #bd93f9;
+}`}
+          </code>
+        </pre>
+  </main>
+</Story>
+
 <Story name="Zoom Image From Inside Dialog">
   <main aria-label="Story">
     <h1>Zoom Image From Inside Dialog</h1>
