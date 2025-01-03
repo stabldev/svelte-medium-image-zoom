@@ -1,5 +1,12 @@
 # svelte-medium-image-zoom
 
+## 0.0.6
+
+### Patch Changes
+
+- c8e96a0: fix: re-calculate styles on window resize
+- 63768d0: feat: update storybook examples and API docs with new props
+
 ## 0.0.5
 
 ### Patch Changes
