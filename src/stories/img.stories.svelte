@@ -27,13 +27,7 @@
   <main aria-label="Story">
     <h1>Zooming a regular image</h1>
     <Zoom>
-      <img
-        alt={img_that_wanaka_tree.alt}
-        src={img_that_wanaka_tree.src}
-        width="400"
-        decoding="async"
-        loading="lazy"
-      />
+      <img alt={img_that_wanaka_tree.alt} src={img_that_wanaka_tree.src} width="400" />
     </Zoom>
   </main>
 </Story>
@@ -43,13 +37,7 @@
     <h1>Setting a zoomMargin of 45(px)</h1>
     <p>This example should always be offset from the window by at least 45px</p>
     <Zoom zoom_margin={45}>
-      <img
-        alt={img_that_wanaka_tree.alt}
-        src={img_that_wanaka_tree.src}
-        width="400"
-        decoding="async"
-        loading="lazy"
-      />
+      <img alt={img_that_wanaka_tree.alt} src={img_that_wanaka_tree.src} width="400" />
     </Zoom>
   </main>
 </Story>
@@ -59,13 +47,7 @@
     <h1>A portrait image with a small width specified</h1>
     <p>Small size specifications scale well, too — even on mobile.</p>
     <Zoom>
-      <img
-        alt={img_douglas_bagg.alt}
-        src={img_douglas_bagg.src}
-        height="150"
-        decoding="async"
-        loading="lazy"
-      />
+      <img alt={img_douglas_bagg.alt} src={img_douglas_bagg.src} height="150" />
     </Zoom>
   </main>
 </Story>
@@ -74,13 +56,7 @@
   <main aria-label="Story" class="max-w-60">
     <h1>An image with an SVG src</h1>
     <Zoom>
-      <img
-        alt={img_nz_map.alt}
-        src={img_nz_map.src}
-        height="150"
-        decoding="async"
-        loading="lazy"
-      />
+      <img alt={img_nz_map.alt} src={img_nz_map.src} height="150" />
     </Zoom>
   </main>
 </Story>
@@ -105,13 +81,7 @@
       dimensions.
     </p>
     <Zoom>
-      <img
-        alt={img_kea_small.alt}
-        src={img_kea_small.src}
-        width="150"
-        decoding="async"
-        loading="lazy"
-      />
+      <img alt={img_kea_small.alt} src={img_kea_small.src} width="150" />
     </Zoom>
   </main>
 </Story>
@@ -122,13 +92,7 @@
     <p>Use CSS to customize the zoom modal styles.</p>
     <p>Here, we slow down the transition time and use a different overlay color.</p>
     <Zoom class_dialog="custom-zoom">
-      <img
-        alt={img_glenorchy_lagoon.alt}
-        src={img_glenorchy_lagoon.src}
-        width="400"
-        decoding="async"
-        loading="lazy"
-      />
+      <img alt={img_glenorchy_lagoon.alt} src={img_glenorchy_lagoon.src} width="400" />
     </Zoom>
     <p>
       The CSS class, <code>custom-zoom</code>, is sent to the component via the
@@ -169,13 +133,7 @@
       <button onclick={() => ref_img_dialog?.close()}>Close</button>
       <h1>Zooming should work!</h1>
       <Zoom>
-        <img
-          alt={img_glenorchy_lagoon.alt}
-          src={img_glenorchy_lagoon.src}
-          width="400"
-          decoding="async"
-          loading="lazy"
-        />
+        <img alt={img_glenorchy_lagoon.alt} src={img_glenorchy_lagoon.src} width="400" />
       </Zoom>
     </dialog>
   </main>
@@ -196,8 +154,6 @@
         alt={img_hooker_valley_track.alt}
         src={img_hooker_valley_track.src}
         width="400"
-        decoding="async"
-        loading="lazy"
       />
     </Zoom>
   </main>
