@@ -389,7 +389,6 @@
    * delays before firing the event.
    */
   function ensure_img_transition_end() {
-    console.log('called');
     if (ref_modal_img) {
       const td = window.getComputedStyle(ref_modal_img).transitionDuration;
       const td_float = parseFloat(td);
