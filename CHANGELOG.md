@@ -1,5 +1,13 @@
 # svelte-medium-image-zoom
 
+## 0.0.5
+
+### Patch Changes
+
+- 62045d0: revert: zoom unzoom icon props
+- 24de047: refactor: export default solo component
+- a4aa51c: refactor: change states and rename to snake_case
+
 ## 0.0.4
 
 ### Patch Changes

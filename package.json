@@ -1,6 +1,6 @@
 {
   "name": "svelte-medium-image-zoom",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "license": "MIT",
   "description": "Accessible medium.com-style image zoom for Svelte",
   "scripts": {
