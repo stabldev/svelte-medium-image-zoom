@@ -2,4 +2,4 @@
 'svelte-medium-image-zoom': patch
 ---
 
-refactor: export default solo component
+revert: zoom unzoom icon props
