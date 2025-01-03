@@ -32,6 +32,9 @@ npm install --save svelte-medium-image-zoom
 
 ## API
 
+Note: component type props are rendered as `snippets`, check [this](https://svelte.dev/docs/svelte/snippet) for more.  
+[example use](https://github.com/moonlitgrace/svelte-medium-image-zoom/pull/17)
+
 ```typescript
 export interface ZoomProps {
   // Accessible label text for when you want to unzoom.
@@ -50,11 +53,11 @@ export interface ZoomProps {
 
   // Provide your own unzoom button icon.
   // Default: ICompress
-  IconUnzoom?: Component | Snippet;
+  icon_unzoom?: Snippet;
 
   // Provide your own zoom button icon.
   // Default: IEnlarge
-  IconZoom?: Component | Snippet;
+  icon_zoom?: Snippet;
 
   // Tell the component whether or not it should be zoomed
   // Default: false
