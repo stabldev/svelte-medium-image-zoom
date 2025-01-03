@@ -98,7 +98,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-
   [data-smiz-modal-overlay],
   [data-smiz-modal-img] {
     transition-duration: 0.01ms !important;

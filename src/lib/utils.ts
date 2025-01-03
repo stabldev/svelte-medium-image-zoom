@@ -1,4 +1,4 @@
-import type { SupportedImage } from './types.js';
+import type { Nullable, SupportedImage } from './types.js';
 
 /**
  * Generate random string id with given segments and length
@@ -221,4 +221,23 @@ export const get_style_modal_img = ({
   }
 
   return style;
+};
+
+// ==================================================
+
+interface GhostStyleParams {
+  img_el: Nullable<SupportedImage>;
+}
+
+export const get_style_ghost = (
+  img_el: GhostStyleParams['img_el']
+): Record<string, string> => {
+  if (!img_el) return {};
+
+  return {
+    height: `${img_el.offsetHeight}px`,
+    width: `${img_el.offsetWidth}px`,
+    top: `${img_el.offsetTop}px`,
+    left: `${img_el.offsetLeft}px`
+  };
 };

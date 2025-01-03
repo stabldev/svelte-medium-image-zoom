@@ -8,7 +8,8 @@
     get_img_src,
     get_img_alt,
     get_style_modal_img,
-    style_obj_to_css_string
+    style_obj_to_css_string,
+    get_style_ghost
   } from '$lib/utils.js';
   import { onDestroy, onMount, tick, untrack } from 'svelte';
   import { portal } from 'svelte-portal';
@@ -107,9 +108,9 @@
         })
       : {}
   );
-  const style_modal_img_string = $derived.by(() =>
-    style_obj_to_css_string(style_modal_img_obj)
-  );
+  const style_modal_img_string = $derived(style_obj_to_css_string(style_modal_img_obj));
+  let style_ghost = $state<Record<string, string>>({});
+  const style_ghost_string = $derived(style_obj_to_css_string(style_ghost));
 
   // ==================================================
 
@@ -216,6 +217,7 @@
 
     const set_loaded = () => {
       loaded_img_el = img;
+      style_ghost = get_style_ghost(img_el);
     };
 
     img
@@ -399,7 +401,7 @@
     {@render children()}
   </div>
   {#if has_image()}
-    <svelte:element this={wrap_element} data-smiz-ghost="">
+    <svelte:element this={wrap_element} data-smiz-ghost="" style={style_ghost_string}>
       <button
         aria-label={label_btn_zoom}
         data-smiz-btn-zoom=""
