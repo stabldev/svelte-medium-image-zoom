@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { IModalState, Nullable, SupportedImage, ZoomProps } from '$lib/types.js';
   import { default_body_attrs, IMAGE_QUERY, ModalState } from '$lib/constants.js';
+  import { portal } from '$lib/helpers/portal.js';
   import {
     generate_id,
     get_dialog_container,
@@ -13,10 +14,9 @@
     get_style_ghost
   } from '$lib/utils.js';
   import { onDestroy, onMount, tick, untrack } from 'svelte';
-  import { portal } from 'svelte-portal';
+  import { browser } from '$app/environment';
   import ICompress from './icons/i-compress.svelte';
   import IEnlarge from './icons/i-enlarge.svelte';
-  import { browser } from '$app/environment';
 
   // ==================================================
 
@@ -474,13 +474,13 @@
     </svelte:element>
     <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_noninteractive_element_interactions -->
     <dialog
+      use:portal={get_dialog_container()}
       aria-labelledby={id_modal_img}
       aria-modal="true"
       class={class_dialog}
       data-smiz-modal=""
       id={id_modal}
       bind:this={ref_dialog}
-      use:portal={get_dialog_container()}
       onclick={handle_dialog_click}
       onclose={handle_dialog_close}
       oncancel={handle_dialog_cancel}
