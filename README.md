@@ -1,13 +1,13 @@
 # svelte-medium-image-zoom
 
-![NPM Version](https://img.shields.io/npm/v/svelte-medium-image-zoom)
-![NPM License](https://img.shields.io/npm/l/svelte-medium-image-zoom)
+[![NPM Version](https://img.shields.io/npm/v/svelte-medium-image-zoom?style=flat-square)](https://www.npmjs.com/package/svelte-medium-image-zoom)
+[![NPM License](https://img.shields.io/npm/l/svelte-medium-image-zoom?style=flat-square)](https://www.npmjs.com/package/svelte-medium-image-zoom)
+[![Website](https://img.shields.io/website?url=https%3A%2F%2Fmoonlitgrace.github.io%2Fsvelte-medium-image-zoom%2F&style=flat-square)](https://moonlitgrace.github.io/svelte-medium-image-zoom/)
+[![NPM Unpacked Size](https://img.shields.io/npm/unpacked-size/svelte-medium-image-zoom?style=flat-square)](https://www.npmjs.com/package/svelte-medium-image-zoom)
 
 The original [medium.com-inspired image zooming](https://medium.design/image-zoom-on-medium-24d146fc0c20) library for [Svelte](https://svelte.dev/).\
 [View the storybook examples](https://moonlitgrace.github.io/svelte-medium-image-zoom/)
 to see various usages.
-
-> status: alpha
 
 ## Quickstart
 
@@ -97,3 +97,7 @@ export interface ZoomProps {
 }
 ```
 <!-- prettier-ignore-end -->
+
+## Credits
+
+This project is inspired from [rpearce](https://github.com/rpearce)'s [`react-medium-image-zoom`](https://github.com/rpearce/react-medium-image-zoom) library.
