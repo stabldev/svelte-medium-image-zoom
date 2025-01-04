@@ -11,18 +11,18 @@ to see various usages.
 
 Features:
 
-* `<img />`, including [`loading="lazy"`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#attr-loading)
-* `<div>` and `<span>` with any [`background-image`](https://developer.mozilla.org/en-US/docs/Web/CSS/background-image),
+- `<img />`, including [`loading="lazy"`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#attr-loading)
+- `<div>` and `<span>` with any [`background-image`](https://developer.mozilla.org/en-US/docs/Web/CSS/background-image),
   [`background-size`](https://developer.mozilla.org/en-US/docs/Web/CSS/background-size),
   and [`background-position`](https://developer.mozilla.org/en-US/docs/Web/CSS/background-position)
-* [Custom zoom modal content](#custom-zoom-modal-content) (👇)
-* Zero `dependencies`
+- [Custom zoom modal content](#custom-zoom-modal-content) (👇)
+- Zero `dependencies`
 
 Requirements to know about:
 
-* `<dialog>` element ([caniuse dialog](https://caniuse.com/dialog))
-* `ResizeObserver` ([caniuse ResizeObserver](https://caniuse.com/mdn-api_resizeobserver))
-* Package build target is `ESNext`. If you need to support older environments,
+- `<dialog>` element ([caniuse dialog](https://caniuse.com/dialog))
+- `ResizeObserver` ([caniuse ResizeObserver](https://caniuse.com/mdn-api_resizeobserver))
+- Package build target is `ESNext`. If you need to support older environments,
   run this package through your build system.
 
 ## Quickstart
@@ -223,10 +223,13 @@ Below is some example code that demonstrates how to use this feature.
         class="zoom-caption zoom-caption--bottom"
         class:zoom-caption--loaded={modal_state === 'LOADED'}
       >
-        That Wanaka Tree, also known as the Wanaka Willow, is a willow tree located at
-        the southern end of Lake Wānaka in the Otago region of New Zealand.
+        That Wanaka Tree, also known as the Wanaka Willow, is a willow tree located at the
+        southern end of Lake Wānaka in the Otago region of New Zealand.
         <cite className="zoom-caption-cite">
-          Wikipedia, <a className="zoom-caption-link" href="https://en.wikipedia.org/wiki/That_Wanaka_Tree">
+          Wikipedia, <a
+            className="zoom-caption-link"
+            href="https://en.wikipedia.org/wiki/That_Wanaka_Tree"
+          >
             That Wanaka Tree
           </a>
         </cite>
