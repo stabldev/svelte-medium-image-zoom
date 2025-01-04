@@ -2,7 +2,6 @@
 
 [![NPM Version](https://img.shields.io/npm/v/svelte-medium-image-zoom?style=flat-square)](https://www.npmjs.com/package/svelte-medium-image-zoom)
 [![NPM License](https://img.shields.io/npm/l/svelte-medium-image-zoom?style=flat-square)](https://www.npmjs.com/package/svelte-medium-image-zoom)
-[![Website](https://img.shields.io/website?url=https%3A%2F%2Fmoonlitgrace.github.io%2Fsvelte-medium-image-zoom%2F&style=flat-square)](https://moonlitgrace.github.io/svelte-medium-image-zoom/)
 [![NPM Unpacked Size](https://img.shields.io/npm/unpacked-size/svelte-medium-image-zoom?style=flat-square)](https://www.npmjs.com/package/svelte-medium-image-zoom)
 
 The original [medium.com-inspired image zooming](https://medium.design/image-zoom-on-medium-24d146fc0c20) library for [Svelte](https://svelte.dev/).\
@@ -169,7 +168,7 @@ Import the component and the CSS, wrap your image with the component, and then d
   {is_zoomed}
   on_zoom_change={(z) => (is_zoomed = z)}
   wrap_element="span"
-  zoom_margin={0}
+  zoom_margin={25}
 >
   <img
     alt="That Wanaka Tree, New Zealand by Laura Smetsers"
