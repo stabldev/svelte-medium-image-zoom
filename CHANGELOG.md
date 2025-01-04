@@ -1,5 +1,11 @@
 # svelte-medium-image-zoom
 
+## 0.1.0
+
+### Minor Changes
+
+- 05c2c88: chore: v0.1.0
+
 ## 0.0.7
 
 ### Patch Changes
