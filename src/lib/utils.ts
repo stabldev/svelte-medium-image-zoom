@@ -203,7 +203,7 @@ export interface ParsePosition {
   relative_num: number
 }
 
-export const parsePosition = ({ position, relative_num }: ParsePosition): number => {
+export const parse_position = ({ position, relative_num }: ParsePosition): number => {
   const position_num = parseFloat(position)
 
   return position.endsWith('%')
@@ -242,8 +242,8 @@ const get_div_img_style = ({
     }
 
     const [size_w = '50%', size_h = '50%'] = background_size.split(' ')
-    const size_width = parsePosition({ position: size_w, relative_num: container_width })
-    const size_height = parsePosition({ position: size_h, relative_num: container_height })
+    const size_width = parse_position({ position: size_w, relative_num: container_width })
+    const size_height = parse_position({ position: size_h, relative_num: container_height })
 
     return Math.min(size_width / width, size_height / height)
   }
@@ -251,8 +251,8 @@ const get_div_img_style = ({
   const ratio = compute_ratio()
   // compute position based on background_position
   const [_pos_x = '50%', _pos_y = '50%'] = background_position.split(' ')
-  const pos_x = parsePosition({ position: _pos_x, relative_num: container_width - width * ratio })
-  const pos_y = parsePosition({ position: _pos_y, relative_num: container_height - height * ratio })
+  const pos_x = parse_position({ position: _pos_x, relative_num: container_width - width * ratio })
+  const pos_y = parse_position({ position: _pos_y, relative_num: container_height - height * ratio })
 
   // calculate scale
   const scale = get_scale({

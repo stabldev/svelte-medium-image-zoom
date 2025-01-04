@@ -21,19 +21,3 @@
     loading="lazy"
   />
 </Zoom>
-<Zoom>
-  <div
-    aria-label="That Wanaka Tree, New Zealand by Laura Smetsers"
-    role="img"
-    class="div-img"
-    style="
-      background-color: #fff;
-      background-image: url(/media/laura-smetsers.jpg);
-      background-position: top;
-      background-repeat: no-repeat;
-      background-size: cover;
-      width: 500px;
-      height: 300px;
-    "
-  ></div>
-</Zoom>
