@@ -405,6 +405,7 @@
 
 {#snippet modal_img()}
   <img
+    bind:this={ref_modal_img}
     alt={img_alt}
     src={img_src}
     srcset={img_el?.srcset}
@@ -414,7 +415,6 @@
     style={style_modal_img_string}
     width={style_modal_img_obj.width}
     height={style_modal_img_obj.height}
-    bind:this={ref_modal_img}
   />
 {/snippet}
 
@@ -450,8 +450,8 @@
 
 <svelte:element this={wrap_element} aria-owns={id_modal} data-smiz="">
   <div
-    data-smiz-content={data_content_state}
     bind:this={ref_content}
+    data-smiz-content={data_content_state}
     style="visibility: {modal_state === ModalState.UNLOADED ? 'visible' : 'hidden'};"
   >
     {@render children()}
@@ -475,18 +475,18 @@
     <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_noninteractive_element_interactions -->
     <dialog
       use:portal={get_dialog_container()}
+      bind:this={ref_dialog}
       aria-labelledby={id_modal_img}
       aria-modal="true"
       class={class_dialog}
       data-smiz-modal=""
       id={id_modal}
-      bind:this={ref_dialog}
       onclick={handle_dialog_click}
       onclose={handle_dialog_close}
       oncancel={handle_dialog_cancel}
     >
       <div data-smiz-modal-overlay={data_overlay_state}></div>
-      <div data-smiz-modal-content="" bind:this={ref_modal_content}>
+      <div bind:this={ref_modal_content} data-smiz-modal-content="">
         {@render modal_content()}
       </div>
     </dialog>
