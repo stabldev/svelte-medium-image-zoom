@@ -1,5 +1,5 @@
 import type { Snippet } from 'svelte';
-import { ModalState } from './constants.js';
+import { ModalState } from './states.js';
 
 // ==================================================
 

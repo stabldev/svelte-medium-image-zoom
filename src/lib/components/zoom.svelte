@@ -1,6 +1,12 @@
 <script lang="ts">
-  import type { IModalState, Nullable, SupportedImage, ZoomProps } from '$lib/types.js';
-  import { default_body_attrs, IMAGE_QUERY, ModalState } from '$lib/constants.js';
+  import type {
+    BodyAttrs,
+    IModalState,
+    Nullable,
+    SupportedImage,
+    ZoomProps
+  } from '$lib/types.js';
+  import { ModalState } from '$lib/states.js';
   import { portal } from '$lib/internals.js';
   import {
     generate_id,
@@ -13,10 +19,29 @@
     style_obj_to_css_string,
     get_style_ghost
   } from '$lib/utils.js';
-  import { onDestroy, onMount, tick, untrack } from 'svelte';
-  import { browser } from '$app/environment';
   import ICompress from './icons/i-compress.svelte';
   import IEnlarge from './icons/i-enlarge.svelte';
+  import { onDestroy, onMount, tick, untrack } from 'svelte';
+  import { browser } from '$app/environment';
+
+  // ==================================================
+
+  /**
+   * The selector query we use to find and track the image
+   */
+  const IMAGE_QUERY = ['img', '[role="img"]', '[data-zoom]']
+    .map((x) => `${x}:not([aria-hidden="true"])`)
+    .join(',');
+
+  /**
+   * Helps keep track of some key `<body>` attributes
+   * so we can remove and re-add them when disabling and
+   * re-enabling body scrolling
+   */
+  const default_body_attrs: BodyAttrs = {
+    overflow: '',
+    width: ''
+  };
 
   // ==================================================
 
