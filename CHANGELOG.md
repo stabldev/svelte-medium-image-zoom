@@ -1,5 +1,11 @@
 # svelte-medium-image-zoom
 
+## 0.1.2
+
+### Patch Changes
+
+- 7513010: fix: export dist/styles.css
+
 ## 0.1.1
 
 ### Patch Changes
