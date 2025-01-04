@@ -1,5 +1,12 @@
 # svelte-medium-image-zoom
 
+## 0.1.1
+
+### Patch Changes
+
+- 671418d: chore(docs): proper readme.md
+- 671418d: refactor: better types and constants
+
 ## 0.1.0
 
 ### Minor Changes
