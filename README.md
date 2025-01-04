@@ -46,7 +46,7 @@ export interface ZoomProps {
   a11y_name_button_zoom?: string;
 
   // Your image (required).
-  children: Snippet;
+  children: Snippet<[]>;
 
   // Custom CSS class to add to the zoomed <dialog>.
   class_dialog?: string;
@@ -59,11 +59,11 @@ export interface ZoomProps {
 
   // Provide your own unzoom button icon.
   // Default: ICompress
-  icon_unzoom?: Snippet;
+  icon_unzoom?: Snippet<[]>;
 
   // Provide your own zoom button icon.
   // Default: IEnlarge
-  icon_zoom?: Snippet;
+  icon_zoom?: Snippet<[]>;
 
   // Tell the component whether or not it should be zoomed
   // Default: false
@@ -78,6 +78,14 @@ export interface ZoomProps {
   // image is inside a <p> or <button>, for example.
   // Default: 'div'
   wrap_element?: 'div' | 'span';
+
+  // Provide your own custom modal content component.
+  zoom_content?: Snippet<[{
+    img: Snippet<[]>;
+    button_unzoom: Snippet<[]>;
+    modal_state: IModalState;
+    on_unzoom: () => void;
+  }]>;
 
   // Offset in pixels the zoomed image should
   // be from the window's boundaries.
