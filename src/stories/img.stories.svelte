@@ -132,7 +132,7 @@
     </Zoom>
     <p>
       The CSS class, <code>custom-zoom</code>, is sent to the component via the
-      <code>classDialog</code> string prop. Here are the styles used:
+      <code>class_dialog</code> string prop. Here are the styles used:
     </p>
     <pre>
           <code>
@@ -178,6 +178,47 @@
         />
       </Zoom>
     </dialog>
+  </main>
+</Story>
+
+<Story name="Modal Figure Caption">
+  <main aria-label="Story" class="max-w-60">
+    <h1>Modal With Figure And Caption</h1>
+    <p>
+      If you want more control over the zoom modal's content, you can pass a `zoom_content`
+      component
+    </p>
+    <Zoom>
+      {#snippet zoom_content({ img, button_unzoom, modal_state })}
+        {@render button_unzoom()}
+        <figure>
+          {@render img()}
+          <figcaption
+            class="zoom-caption zoom-caption--bottom"
+            class:zoom-caption--loaded={modal_state === 'LOADED'}
+          >
+            That Wanaka Tree, also known as the Wanaka Willow, is a willow tree located at
+            the southern end of Lake Wānaka in the Otago region of New Zealand.
+            <cite class="zoom-caption-cite">
+              Wikipedia,{' '}
+              <a
+                href="https://en.wikipedia.org/wiki/That_Wanaka_Tree"
+                class="zoom-caption-link"
+              >
+                That Wanaka Tree
+              </a>
+            </cite>
+          </figcaption>
+        </figure>
+      {/snippet}
+      <img
+        alt={img_that_wanaka_tree.alt}
+        src={img_that_wanaka_tree.src}
+        width="500"
+        decoding="async"
+        loading="lazy"
+      />
+    </Zoom>
   </main>
 </Story>
 
