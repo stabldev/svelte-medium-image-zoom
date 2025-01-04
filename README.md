@@ -14,11 +14,12 @@ to see various usages.
 ```bash
 npm install --save svelte-medium-image-zoom
 ```
+
 <!-- prettier-ignore-start -->
 ```svelte
 <script lang="ts">
-  import Zoom from 'svelte-medium-image-zoom'
-  import 'svelte-medium-image-zoom/dist/styles.css'
+  import Zoom from 'svelte-medium-image-zoom';
+  import 'svelte-medium-image-zoom/dist/styles.css';
 </script>
 
 <Zoom>
@@ -30,6 +31,7 @@ npm install --save svelte-medium-image-zoom
 </Zoom>
 ```
 <!-- prettier-ignore-end -->
+
 ## API
 
 Note: component type props are rendered as `snippets`, check [this](https://svelte.dev/docs/svelte/snippet) for more.\
