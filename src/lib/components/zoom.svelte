@@ -1,5 +1,6 @@
 <script lang="ts">
-  import type { BodyAttrs, Nullable, SupportedImage, ZoomProps } from '$lib/types.js';
+  import type { IModalState, Nullable, SupportedImage, ZoomProps } from '$lib/types.js';
+  import { default_body_attrs, IMAGE_QUERY, ModalState } from '$lib/constants.js';
   import {
     generate_id,
     get_dialog_container,
@@ -16,36 +17,6 @@
   import ICompress from './icons/i-compress.svelte';
   import IEnlarge from './icons/i-enlarge.svelte';
   import { browser } from '$app/environment';
-
-  // ==================================================
-
-  /**
-   * The selector query we use to find and track the image
-   */
-  const IMAGE_QUERY = ['img', '[role="img"]', '[data-zoom]']
-    .map((x) => `${x}:not([aria-hidden="true"])`)
-    .join(',');
-
-  /**
-   * Helps keep track of some key `<body>` attributes
-   * so we can remove and re-add them when disabling and
-   * re-enabling body scrolling
-   */
-  const default_body_attrs: BodyAttrs = {
-    overflow: '',
-    width: ''
-  };
-
-  // ==================================================
-
-  const ModalState = Object.freeze({
-    LOADED: 'LOADED',
-    LOADING: 'LOADING',
-    UNLOADED: 'UNLOADED',
-    UNLOADING: 'UNLOADING'
-  });
-
-  type IModalState = (typeof ModalState)[keyof typeof ModalState];
 
   // ==================================================
 
