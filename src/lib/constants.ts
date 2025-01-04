@@ -1,4 +1,4 @@
-import type { BodyAttrs } from "./types.js";
+import type { BodyAttrs } from './types.js';
 
 /**
  * The selector query we use to find and track the image
@@ -20,7 +20,7 @@ export const default_body_attrs: BodyAttrs = {
 /**
  * Track if modak image shown(loaded), showing (loading),
  * hidden(unloaded), hiding(unloading)
-*/
+ */
 export const ModalState = Object.freeze({
   LOADED: 'LOADED',
   LOADING: 'LOADING',

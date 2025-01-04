@@ -11,7 +11,7 @@
   {is_zoomed}
   on_zoom_change={(z) => (is_zoomed = z)}
   wrap_element="span"
-  zoom_margin={25}
+  zoom_margin={0}
 >
   <img
     alt={img_that_wanaka_tree.alt}
