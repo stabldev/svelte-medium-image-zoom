@@ -32,6 +32,7 @@
     is_zoomed,
     on_zoom_change,
     wrap_element = 'div',
+    zoom_content,
     zoom_margin = 0
   }: ZoomProps = $props();
 
@@ -402,6 +403,51 @@
   }
 </script>
 
+{#snippet modal_img()}
+  <img
+    alt={img_alt}
+    src={img_src}
+    srcset={img_el?.srcset}
+    sizes={img_el?.sizes}
+    data-smiz-modal-img=""
+    id={id_modal_img}
+    style={style_modal_img_string}
+    width={style_modal_img_obj.width}
+    height={style_modal_img_obj.height}
+    bind:this={ref_modal_img}
+  />
+{/snippet}
+
+{#snippet modal_button_unzoom()}
+  <button
+    aria-label={a11y_name_button_unzoom}
+    data-smiz-btn-unzoom=""
+    onclick={handle_unzoom_btn_click}
+    type="button"
+    class={class_button_unzoom}
+  >
+    {#if icon_unzoom}
+      {@render icon_unzoom()}
+    {:else}
+      <ICompress />
+    {/if}
+  </button>
+{/snippet}
+
+{#snippet modal_content()}
+  {#if zoom_content}
+    {@render zoom_content({
+      modal_state,
+      img: modal_img,
+      on_unzoom: handle_unzoom,
+      button_unzoom: modal_button_unzoom
+    })}
+  {:else}
+    {@render modal_img()}
+    {@render modal_button_unzoom()}
+  {/if}
+{/snippet}
+
 <svelte:element this={wrap_element} aria-owns={id_modal} data-smiz="">
   <div
     data-smiz-content={data_content_state}
@@ -441,31 +487,7 @@
     >
       <div data-smiz-modal-overlay={data_overlay_state}></div>
       <div data-smiz-modal-content="" bind:this={ref_modal_content}>
-        <img
-          alt={img_alt}
-          src={img_src}
-          srcset={img_el?.srcset}
-          sizes={img_el?.sizes}
-          data-smiz-modal-img=""
-          id={id_modal_img}
-          style={style_modal_img_string}
-          width={style_modal_img_obj.width}
-          height={style_modal_img_obj.height}
-          bind:this={ref_modal_img}
-        />
-        <button
-          aria-label={a11y_name_button_unzoom}
-          data-smiz-btn-unzoom=""
-          onclick={handle_unzoom_btn_click}
-          type="button"
-          class={class_button_unzoom}
-        >
-          {#if icon_unzoom}
-            {@render icon_unzoom()}
-          {:else}
-            <ICompress />
-          {/if}
-        </button>
+        {@render modal_content()}
       </div>
     </dialog>
   {/if}

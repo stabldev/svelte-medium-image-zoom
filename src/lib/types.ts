@@ -29,9 +29,9 @@ export interface ZoomProps {
   on_zoom_change?: (value: boolean) => void;
   wrap_element?: 'div' | 'span';
   zoom_content?: Snippet<[{
-    img: Nullable<HTMLImageElement>;
+    img: Snippet;
     button_unzoom: Snippet;
-    moda_state: IModalState;
+    modal_state: IModalState;
     on_unzoom: () => void;
   }]>;
   zoom_margin?: number;
