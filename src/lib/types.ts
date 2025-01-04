@@ -9,7 +9,7 @@ export type IModalState = (typeof ModalState)[keyof typeof ModalState];
 
 // ==================================================
 
-export type SupportedImage = HTMLImageElement;
+export type SupportedImage = HTMLImageElement | HTMLDivElement | HTMLSpanElement;
 
 export interface BodyAttrs {
   overflow: string;

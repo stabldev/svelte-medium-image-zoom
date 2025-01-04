@@ -48,19 +48,29 @@ const test_el_type: TestElType = (type, el) => {
   return type === (el as Element)?.tagName?.toUpperCase();
 };
 
+export const test_div = (el: unknown): el is HTMLDivElement | HTMLSpanElement => test_el_type('DIV', el) || test_el_type('SPAN', el);
 export const test_img = (el: unknown): el is HTMLImageElement => test_el_type('IMG', el);
 export const test_img_loaded = (el: HTMLImageElement) =>
   el.complete && el.naturalHeight !== 0;
 
 // ==================================================
 
+const URL_REGEX = /url(?:\(['"]?)(.*?)(?:['"]?\))/
+
 interface GetImgSrc {
   (img_el: SupportedImage | null): string | undefined;
 }
 
 export const get_img_src: GetImgSrc = (img_el) => {
-  if (img_el && test_img(img_el)) {
+  if (!img_el) return;
+  if (test_img(img_el)) {
     return img_el.currentSrc;
+  } else if (test_div(img_el)) {
+    const bg_img = window.getComputedStyle(img_el).backgroundImage;
+
+    if (bg_img) {
+      return URL_REGEX.exec(bg_img)?.[1];
+    }
   }
 };
 
@@ -69,8 +79,11 @@ interface GetImgAlt {
 }
 
 export const get_img_alt: GetImgAlt = (img_el) => {
-  if (img_el && test_img(img_el)) {
+  if (!img_el) return;
+  if (test_img(img_el)) {
     return img_el.alt ?? undefined;
+  } else {
+    return img_el.getAttribute('aria-label') ?? undefined;
   }
 };
 
@@ -185,6 +198,83 @@ const get_img_regular_style = ({
 
 // ==================================================
 
+export interface ParsePosition {
+  position: string,
+  relative_num: number
+}
+
+export const parsePosition = ({ position, relative_num }: ParsePosition): number => {
+  const position_num = parseFloat(position)
+
+  return position.endsWith('%')
+    ? relative_num * position_num / 100
+    : position_num
+}
+
+// ==================================================
+
+interface DivStyleParams extends RegularStyleParams {
+  background_position: string;
+  background_size: string;
+}
+
+const get_div_img_style = ({
+  background_position,
+  background_size,
+  container_height,
+  container_width,
+  container_left,
+  container_top,
+  height,
+  width,
+  offset,
+  has_scalable_src
+}: DivStyleParams): Record<string, string> => {
+  // compute scaling ratio based on background_size
+  function compute_ratio() {
+    const width_ratio = container_width / width;
+    const height_ratio = container_height / height;
+
+    if (background_size === 'cover') {
+      return Math.max(width_ratio, height_ratio)
+    } else if (background_size === 'contain') {
+      return Math.min(width_ratio, height_ratio)
+    }
+
+    const [size_w = '50%', size_h = '50%'] = background_size.split(' ')
+    const size_width = parsePosition({ position: size_w, relative_num: container_width })
+    const size_height = parsePosition({ position: size_h, relative_num: container_height })
+
+    return Math.min(size_width / width, size_height / height)
+  }
+
+  const ratio = compute_ratio()
+  // compute position based on background_position
+  const [_pos_x = '50%', _pos_y = '50%'] = background_position.split(' ')
+  const pos_x = parsePosition({ position: _pos_x, relative_num: container_width - width * ratio })
+  const pos_y = parsePosition({ position: _pos_y, relative_num: container_height - height * ratio })
+
+  // calculate scale
+  const scale = get_scale({
+    container_height: height * ratio,
+    container_width: width * ratio,
+    height,
+    width,
+    offset,
+    has_scalable_src
+  })
+
+  return {
+    top: `${container_top + pos_y}px`,
+    left: `${container_left + pos_x}px`,
+    width: `${width * ratio * scale}`,
+    height: `${height * ratio * scale}`,
+    transform: `translate(0,0) scale(${1 / scale})`,
+  }
+}
+
+// ==================================================
+
 const SRC_SVG_REGEX = /\.svg$/i
 
 interface ModalImgStyleParams {
@@ -210,7 +300,9 @@ export const get_style_modal_img = ({
 
 
   const img_rect = target_el.getBoundingClientRect();
-  // const target_el_computed_style = window.getComputedStyle(target_el)
+  const target_el_computed_style = window.getComputedStyle(target_el)
+
+  const is_div_img = loaded_img_el && test_div(target_el)
 
   const width = loaded_img_el?.naturalWidth || img_rect.width;
   const height = loaded_img_el?.naturalHeight || img_rect.height;
@@ -226,7 +318,22 @@ export const get_style_modal_img = ({
     has_scalable_src
   });
 
-  const style = Object.assign({}, style_img_regular);
+  const style_div_img = is_div_img
+    ? get_div_img_style({
+      background_position: target_el_computed_style.backgroundPosition,
+      background_size: target_el_computed_style.backgroundSize,
+      container_height: img_rect.height,
+      container_width: img_rect.width,
+      container_left: img_rect.left,
+      container_top: img_rect.top,
+      height,
+      width,
+      offset,
+      has_scalable_src
+    })
+    : {};
+
+  const style = Object.assign({}, style_img_regular, style_div_img);
 
   if (is_zoomed) {
     const viewport_x = window.innerWidth / 2;
