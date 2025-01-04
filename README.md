@@ -80,12 +80,16 @@ export interface ZoomProps {
   wrap_element?: 'div' | 'span';
 
   // Provide your own custom modal content component.
-  zoom_content?: Snippet<[{
-    img: Snippet<[]>;
-    button_unzoom: Snippet<[]>;
-    modal_state: IModalState;
-    on_unzoom: () => void;
-  }]>;
+  zoom_content?: Snippet<
+    [
+      {
+        img: Snippet<[]>;
+        button_unzoom: Snippet<[]>;
+        modal_state: IModalState;
+        on_unzoom: () => void;
+      }
+    ]
+  >;
 
   // Offset in pixels the zoomed image should
   // be from the window's boundaries.

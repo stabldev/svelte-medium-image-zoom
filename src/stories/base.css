@@ -84,11 +84,11 @@ img {
   transition-timing-function: linear;
 }
 
-.custom-zoom [data-smiz-modal-overlay="hidden"] {
+.custom-zoom [data-smiz-modal-overlay='hidden'] {
   background-color: rgb(56, 58, 89, 0);
 }
 
-.custom-zoom [data-smiz-modal-overlay="visible"] {
+.custom-zoom [data-smiz-modal-overlay='visible'] {
   background-color: rgb(56, 58, 89, 1);
 }
 
