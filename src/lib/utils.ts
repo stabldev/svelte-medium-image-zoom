@@ -1,5 +1,7 @@
 import type { Nullable, SupportedImage } from './types.js';
 
+// ==================================================
+
 /**
  * Generate random string id with given segments and length
  * @params

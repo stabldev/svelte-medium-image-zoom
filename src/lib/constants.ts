@@ -18,8 +18,9 @@ export const default_body_attrs: BodyAttrs = {
 };
 
 /**
- * Track if modak image shown(loaded), showing (loading),
- * hidden(unloaded), hiding(unloading)
+ * Track the modal status
+ * shown -> LOADED, showing -> LOADING
+ * hidden -> UNLOADED, hiding -> UNLOADING
  */
 export const ModalState = Object.freeze({
   LOADED: 'LOADED',
