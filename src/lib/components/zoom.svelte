@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { IModalState, Nullable, SupportedImage, ZoomProps } from '$lib/types.js';
   import { default_body_attrs, IMAGE_QUERY, ModalState } from '$lib/constants.js';
-  import { portal } from '$lib/helpers/portal.js';
+  import { portal } from '$lib/internals.js';
   import {
     generate_id,
     get_dialog_container,
