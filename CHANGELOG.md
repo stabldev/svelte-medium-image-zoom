@@ -1,5 +1,12 @@
 # svelte-medium-image-zoom
 
+## 0.0.7
+
+### Patch Changes
+
+- 1417568: feat: `zoom_content` prop for custom zoomed modal's content
+- 37f0dcb: feat: support `div` element with background
+
 ## 0.0.6
 
 ### Patch Changes
