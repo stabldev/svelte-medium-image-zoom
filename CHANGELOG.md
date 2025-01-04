@@ -1,5 +1,12 @@
 # svelte-medium-image-zoom
 
+## 0.1.3
+
+### Patch Changes
+
+- 4031e67: chore: constants -> states
+- 2eb3c79: refactor: internal portal function
+
 ## 0.1.2
 
 ### Patch Changes
