@@ -66,14 +66,11 @@ export interface ZoomProps {
   // Your image (required).
   children: Snippet<[]>;
 
+  // Custom CSS class to add to the unzoom and zoom buttons.
+  class_button?: string;
+
   // Custom CSS class to add to the zoomed <dialog>.
   class_dialog?: string;
-
-  // Custom CSS class to add to the unzoom button.
-  class_button_unzoom?: string;
-
-  // Custom CSS class to add to the zoom button.
-  class_button_zoom?: string;
 
   // Provide your own unzoom button icon.
   // Default: ICompress

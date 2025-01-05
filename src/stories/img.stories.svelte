@@ -226,7 +226,7 @@
   <main aria-label="Story" class="max-w-60">
     <h1>An image with custom zoom & unzoom icons</h1>
     <p>Press TAB to activate the zoom button</p>
-    <Zoom class_button_unzoom="change-icons" class_button_zoom="change-icons">
+    <Zoom class_button="change-icons">
       {#snippet icon_unzoom()}
         <span>-</span>
       {/snippet}

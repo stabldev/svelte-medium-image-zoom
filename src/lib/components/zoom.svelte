@@ -50,8 +50,7 @@
     a11y_name_button_zoom = 'Expand image',
     children,
     class_dialog,
-    class_button_unzoom,
-    class_button_zoom,
+    class_button,
     icon_unzoom,
     icon_zoom,
     is_zoomed,
@@ -449,7 +448,7 @@
     data-smiz-btn-unzoom=""
     onclick={handle_unzoom_btn_click}
     type="button"
-    class={class_button_unzoom}
+    class={class_button}
   >
     {#if icon_unzoom}
       {@render icon_unzoom()}
@@ -488,7 +487,7 @@
         data-smiz-btn-zoom=""
         onclick={handle_zoom}
         type="button"
-        class={class_button_zoom}
+        class={class_button}
       >
         {#if icon_zoom}
           {@render icon_zoom()}
