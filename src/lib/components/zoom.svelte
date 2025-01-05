@@ -92,8 +92,12 @@
       : 'visible'
   );
 
+  const is_img = $derived(test_img(img_el));
+
   const img_alt = $derived(get_img_alt(img_el));
   const img_src = $derived(get_img_src(img_el));
+  const img_sizes = $derived(is_img ? (img_el as HTMLImageElement).sizes : undefined);
+  const img_srcset = $derived(is_img ? (img_el as HTMLImageElement).srcset : undefined);
 
   const label_btn_zoom = $derived.by(() =>
     img_alt ? `${a11y_name_button_zoom}: ${img_alt}` : a11y_name_button_zoom
@@ -432,8 +436,8 @@
     bind:this={ref_modal_img}
     alt={img_alt}
     src={img_src}
-    srcset={img_el?.srcset}
-    sizes={img_el?.sizes}
+    srcset={img_srcset}
+    sizes={img_sizes}
     data-smiz-modal-img=""
     id={id_modal_img}
     style={style_modal_img_string}
