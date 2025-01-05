@@ -13,6 +13,17 @@
   wrap_element="span"
   zoom_margin={0}
 >
+  {#snippet zoom_content({ img, button_unzoom, modal_state })}
+    {@render img()}
+    <div
+      style="
+        opacity: {modal_state === 'LOADING' || modal_state === 'LOADED' ? '1' : '0'};
+        transition: opacity 0.3s;
+      "
+    >
+      {@render button_unzoom()}
+    </div>
+  {/snippet}
   <img
     alt={img_that_wanaka_tree.alt}
     src={img_that_wanaka_tree.src}
