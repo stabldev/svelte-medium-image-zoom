@@ -1,5 +1,13 @@
 # svelte-medium-image-zoom
 
+## 0.1.4
+
+### Patch Changes
+
+- 6b7f513: refactor: single class prop for buttons
+- c0757a0: fix: image element type issue
+- 1d50af9: chore: custom button animation example
+
 ## 0.1.3
 
 ### Patch Changes
