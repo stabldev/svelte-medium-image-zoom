@@ -1,5 +1,12 @@
 # svelte-medium-image-zoom
 
+## 0.1.5
+
+### Patch Changes
+
+- 01003f0: feat: transition `duration` prop
+- 66b9d3a: chore: update readme.md
+
 ## 0.1.4
 
 ### Patch Changes
