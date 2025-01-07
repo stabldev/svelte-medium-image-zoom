@@ -1,3 +1,7 @@
+:root {
+  --smiz-ad: 300ms;
+}
+
 [data-smiz-ghost] {
   position: absolute;
   pointer-events: none;
@@ -73,7 +77,7 @@
 [data-smiz-modal-overlay] {
   position: absolute;
   inset: 0;
-  transition: background-color 0.3s;
+  transition: background-color var(--smiz-ad);
 }
 
 [data-smiz-modal-overlay='hidden'] {
@@ -94,7 +98,7 @@
   position: absolute;
   cursor: zoom-out;
   transform-origin: top left;
-  transition: transform 0.3s;
+  transition: transform var(--smiz-ad);
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -151,17 +151,17 @@ const get_scale = ({
 
   return !has_scalable_src && height && width
     ? get_scale_to_window_max({
-        container_height,
-        container_width,
-        height,
-        width,
-        offset
-      })
+      container_height,
+      container_width,
+      height,
+      width,
+      offset
+    })
     : get_scale_to_window({
-        height: container_height,
-        width: container_width,
-        offset
-      });
+      height: container_height,
+      width: container_width,
+      offset
+    });
 };
 
 // ==================================================
@@ -329,17 +329,17 @@ export const get_style_modal_img = ({
 
   const style_div_img = is_div_img
     ? get_div_img_style({
-        background_position: target_el_computed_style.backgroundPosition,
-        background_size: target_el_computed_style.backgroundSize,
-        container_height: img_rect.height,
-        container_width: img_rect.width,
-        container_left: img_rect.left,
-        container_top: img_rect.top,
-        height,
-        width,
-        offset,
-        has_scalable_src
-      })
+      background_position: target_el_computed_style.backgroundPosition,
+      background_size: target_el_computed_style.backgroundSize,
+      container_height: img_rect.height,
+      container_width: img_rect.width,
+      container_left: img_rect.left,
+      container_top: img_rect.top,
+      height,
+      width,
+      offset,
+      has_scalable_src
+    })
     : {};
 
   const style = Object.assign({}, style_img_regular, style_div_img);
@@ -385,3 +385,22 @@ export const get_style_ghost = (
     left: `${img_el.offsetLeft}px`
   };
 };
+
+// ==================================================
+
+export const parse_duration = (input: string | number) => {
+  if (typeof input === 'number') {
+    return `${input}ms`;
+  }
+
+  const regex = /^(\d+)(ms|s)?$/; // match '1000ms', '1s', or '1000'
+  const match = String(input).trim().match(regex)
+
+  if (match) {
+    const [, value, unit] = match;
+    return `${value}${unit || 'ms'}`
+  }
+
+  console.warn('invalid duration format. falling back to default: 300ms')
+  return '100ms'
+}
