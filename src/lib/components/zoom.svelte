@@ -174,12 +174,11 @@
     }
   });
 
-  // update --smiz-ad (duration) variable
+  // update --smiz-td (duration) variable
   $effect(() => {
     const parsed_duration = parse_duration(duration);
-    console.log(parsed_duration);
     const root = document.querySelector(':root');
-    (root as HTMLElement).style.setProperty('--smiz-ad', parsed_duration);
+    (root as HTMLElement).style.setProperty('--smiz-td', parsed_duration);
   });
 
   // ==================================================
