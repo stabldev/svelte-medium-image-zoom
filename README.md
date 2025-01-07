@@ -72,6 +72,10 @@ export interface ZoomProps {
   // Custom CSS class to add to the zoomed <dialog>.
   class_dialog?: string;
 
+  // Transition duration for modal image and overlay elements.
+  // Default: 300ms
+  duration?: string | number;
+
   // Provide your own unzoom button icon.
   // Default: ICompress
   icon_unzoom?: Snippet<[]>;

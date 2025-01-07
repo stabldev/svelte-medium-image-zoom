@@ -22,6 +22,7 @@ export interface ZoomProps {
   children: Snippet<[]>;
   class_button?: string;
   class_dialog?: string;
+  duration?: string | number;
   icon_unzoom?: Snippet<[]>;
   icon_zoom?: Snippet<[]>;
   is_zoomed?: boolean;

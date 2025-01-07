@@ -17,7 +17,8 @@
     get_img_alt,
     get_style_modal_img,
     style_obj_to_css_string,
-    get_style_ghost
+    get_style_ghost,
+    parse_duration
   } from '$lib/utils.js';
   import ICompress from './icons/i-compress.svelte';
   import IEnlarge from './icons/i-enlarge.svelte';
@@ -51,6 +52,7 @@
     children,
     class_dialog,
     class_button,
+    duration = '300ms',
     icon_unzoom,
     icon_zoom,
     is_zoomed,
@@ -170,6 +172,13 @@
     } else if (!_is_zoomed && modal_state === ModalState.LOADED) {
       untrack(() => unzoom());
     }
+  });
+
+  // update --smiz-td (duration) variable
+  $effect(() => {
+    const parsed_duration = parse_duration(duration);
+    const root = document.querySelector(':root');
+    (root as HTMLElement).style.setProperty('--smiz-td', parsed_duration);
   });
 
   // ==================================================
