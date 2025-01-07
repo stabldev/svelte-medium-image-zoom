@@ -388,7 +388,17 @@ export const get_style_ghost = (
 
 // ==================================================
 
-export const parse_duration = (input: string | number) => {
+/**
+ * @summary Parse given duration to proper formats
+ * @param { string | number } input
+ * @example
+ * ### Example use
+ * ```ts
+ * const parsed_duration = parse_duration(3000);
+ * // output: 3000ms
+ * ```
+ */
+export const parse_duration = (input: string | number): string => {
   if (typeof input === 'number') {
     return `${input}ms`;
   }
