@@ -1,13 +1,9 @@
 import type { Snippet } from 'svelte';
 import { ModalState } from './states.js';
 
-// ==================================================
-
 export type Nullable<T> = T | null;
 
 export type IModalState = (typeof ModalState)[keyof typeof ModalState];
-
-// ==================================================
 
 export type SupportedImage = HTMLImageElement | HTMLDivElement | HTMLSpanElement;
 

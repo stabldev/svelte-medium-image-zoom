@@ -1,7 +1,5 @@
 import type { Nullable, SupportedImage } from './types.js';
 
-// ==================================================
-
 /**
  * Generate random string id with given segments and length
  * @params
@@ -40,8 +38,6 @@ export const style_obj_to_css_string = (style: Record<string, string>) => {
     .join(' ');
 };
 
-// ==================================================
-
 interface TestElType {
   (type: string, e: unknown): boolean;
 }
@@ -55,8 +51,6 @@ export const test_div = (el: unknown): el is HTMLDivElement | HTMLSpanElement =>
 export const test_img = (el: unknown): el is HTMLImageElement => test_el_type('IMG', el);
 export const test_img_loaded = (el: HTMLImageElement) =>
   el.complete && el.naturalHeight !== 0;
-
-// ==================================================
 
 const URL_REGEX = /url(?:\(['"]?)(.*?)(?:['"]?\))/;
 
@@ -90,8 +84,6 @@ export const get_img_alt: GetImgAlt = (img_el) => {
   }
 };
 
-// ==================================================
-
 interface ScaleToWindowParams {
   width: number;
   height: number;
@@ -104,8 +96,6 @@ const get_scale_to_window = ({ height, offset, width }: ScaleToWindowParams): nu
     (window.innerHeight - offset * 2) / height // scale Y-axis
   );
 };
-
-// ==================================================
 
 interface ScaleToWindowMaxParams extends ScaleToWindowParams {
   container_height: number;
@@ -131,8 +121,6 @@ const get_scale_to_window_max = ({
   return scale > 1 ? ratio : scale * ratio;
 };
 
-// ==================================================
-
 interface ScaleParams extends ScaleToWindowMaxParams {
   has_scalable_src: boolean;
 }
@@ -151,20 +139,18 @@ const get_scale = ({
 
   return !has_scalable_src && height && width
     ? get_scale_to_window_max({
-      container_height,
-      container_width,
-      height,
-      width,
-      offset
-    })
+        container_height,
+        container_width,
+        height,
+        width,
+        offset
+      })
     : get_scale_to_window({
-      height: container_height,
-      width: container_width,
-      offset
-    });
+        height: container_height,
+        width: container_width,
+        offset
+      });
 };
-
-// ==================================================
 
 interface RegularStyleParams extends ScaleParams {
   container_left: number;
@@ -199,8 +185,6 @@ const get_img_regular_style = ({
   };
 };
 
-// ==================================================
-
 export interface ParsePosition {
   position: string;
   relative_num: number;
@@ -211,8 +195,6 @@ export const parse_position = ({ position, relative_num }: ParsePosition): numbe
 
   return position.endsWith('%') ? (relative_num * position_num) / 100 : position_num;
 };
-
-// ==================================================
 
 interface DivStyleParams extends RegularStyleParams {
   background_position: string;
@@ -283,8 +265,6 @@ const get_div_img_style = ({
   };
 };
 
-// ==================================================
-
 const SRC_SVG_REGEX = /\.svg$/i;
 
 interface ModalImgStyleParams {
@@ -329,17 +309,17 @@ export const get_style_modal_img = ({
 
   const style_div_img = is_div_img
     ? get_div_img_style({
-      background_position: target_el_computed_style.backgroundPosition,
-      background_size: target_el_computed_style.backgroundSize,
-      container_height: img_rect.height,
-      container_width: img_rect.width,
-      container_left: img_rect.left,
-      container_top: img_rect.top,
-      height,
-      width,
-      offset,
-      has_scalable_src
-    })
+        background_position: target_el_computed_style.backgroundPosition,
+        background_size: target_el_computed_style.backgroundSize,
+        container_height: img_rect.height,
+        container_width: img_rect.width,
+        container_left: img_rect.left,
+        container_top: img_rect.top,
+        height,
+        width,
+        offset,
+        has_scalable_src
+      })
     : {};
 
   const style = Object.assign({}, style_img_regular, style_div_img);
@@ -367,8 +347,6 @@ export const get_style_modal_img = ({
   return style;
 };
 
-// ==================================================
-
 interface GhostStyleParams {
   img_el: Nullable<SupportedImage>;
 }
@@ -386,8 +364,6 @@ export const get_style_ghost = (
   };
 };
 
-// ==================================================
-
 /**
  * @summary Parse given duration to proper formats
  * @param { string | number } input
@@ -404,13 +380,13 @@ export const parse_duration = (input: string | number): string => {
   }
 
   const regex = /^(\d+)(ms|s)?$/; // match '1000ms', '1s', or '1000'
-  const match = String(input).trim().match(regex)
+  const match = String(input).trim().match(regex);
 
   if (match) {
     const [, value, unit] = match;
-    return `${value}${unit || 'ms'}`
+    return `${value}${unit || 'ms'}`;
   }
 
-  console.warn('invalid duration format. falling back to default: 300ms')
-  return '100ms'
-}
+  console.warn('invalid duration format. falling back to default: 300ms');
+  return '100ms';
+};

@@ -1,12 +1,13 @@
 import { tick } from 'svelte';
 
-// ==================================================
-
 interface Portal {
-  (el: HTMLElement, target?: HTMLElement | string): {
+  (
+    el: HTMLElement,
+    target?: HTMLElement | string
+  ): {
     update: (newTarget: HTMLElement | string) => Promise<void>;
     destroy: () => void;
-  }
+  };
 }
 
 /**
@@ -29,7 +30,8 @@ export const portal: Portal = (el, target = 'body') => {
       targetEl = target;
     } else {
       throw new TypeError(
-        `Unknown portal target type: ${target === null ? 'null' : typeof target
+        `Unknown portal target type: ${
+          target === null ? 'null' : typeof target
         }. Allowed types: string (CSS selector) or HTMLElement.`
       );
     }
@@ -48,4 +50,4 @@ export const portal: Portal = (el, target = 'body') => {
     update,
     destroy
   };
-}
+};

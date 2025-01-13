@@ -25,8 +25,6 @@
   import { onDestroy, onMount, tick, untrack } from 'svelte';
   import { browser } from '$app/environment';
 
-  // ==================================================
-
   /**
    * The selector query we use to find and track the image
    */
@@ -43,8 +41,6 @@
     overflow: '',
     width: ''
   };
-
-  // ==================================================
 
   let {
     a11y_name_button_unzoom = 'Minimize image',
@@ -121,8 +117,6 @@
   let style_ghost = $state<Record<string, string>>({});
   const style_ghost_string = $derived(style_obj_to_css_string(style_ghost));
 
-  // ==================================================
-
   onMount(async () => {
     await set_and_track_img();
     handle_img_load();
@@ -143,8 +137,6 @@
       document.removeEventListener('keydown', handle_key_down, true);
     }
   });
-
-  // ==================================================
 
   // handle modal_state changes
   $effect(() => {
@@ -181,8 +173,6 @@
     (root as HTMLElement).style.setProperty('--smiz-td', parsed_duration);
   });
 
-  // ==================================================
-
   /**
    * Debounce modal_state updates, prevents re-triggering updates.
    */
@@ -198,8 +188,6 @@
   function has_image() {
     return img_el && loaded_img_el && window.getComputedStyle(img_el).display !== 'none';
   }
-
-  // ==================================================
 
   /**
    * Find and set the image we're working with
