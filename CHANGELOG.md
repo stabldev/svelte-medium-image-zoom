@@ -1,5 +1,12 @@
 # svelte-medium-image-zoom
 
+## 0.1.6
+
+### Patch Changes
+
+- bb0e076: chore: update dependencies
+- f4bb974: chore: patch_2 v0.1.6
+
 ## 0.1.5
 
 ### Patch Changes
