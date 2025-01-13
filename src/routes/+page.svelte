@@ -32,3 +32,12 @@
     loading="lazy"
   />
 </Zoom>
+<Zoom>
+  <img
+    alt={img_that_wanaka_tree.alt}
+    src={img_that_wanaka_tree.src}
+    width="500"
+    decoding="async"
+    loading="lazy"
+  />
+</Zoom>

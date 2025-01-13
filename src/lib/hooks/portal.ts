@@ -51,3 +51,4 @@ export const portal: Portal = (el, target = 'body') => {
     destroy
   };
 };
+

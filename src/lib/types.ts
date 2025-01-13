@@ -1,16 +1,11 @@
 import type { Snippet } from 'svelte';
-import { ModalState } from './states.js';
+import { ModalState } from './ui_states.js';
 
 export type Nullable<T> = T | null;
 
 export type IModalState = (typeof ModalState)[keyof typeof ModalState];
 
 export type SupportedImage = HTMLImageElement | HTMLDivElement | HTMLSpanElement;
-
-export interface BodyAttrs {
-  overflow: string;
-  width: string;
-}
 
 export interface ZoomProps {
   a11y_name_button_unzoom?: string;

@@ -1,13 +1,7 @@
-<script lang="ts">
-  import type {
-    BodyAttrs,
-    IModalState,
-    Nullable,
-    SupportedImage,
-    ZoomProps
-  } from '$lib/types.js';
-  import { ModalState } from '$lib/states.js';
-  import { portal } from '$lib/internals.js';
+<script module lang="ts">
+  import type { IModalState, Nullable, SupportedImage, ZoomProps } from '$lib/types.js';
+  import { ModalState } from '$lib/ui_states.js';
+  import { portal } from '$lib/hooks/portal.js';
   import {
     generate_id,
     get_dialog_container,
@@ -22,8 +16,11 @@
   } from '$lib/utils.js';
   import ICompress from './icons/i-compress.svelte';
   import IEnlarge from './icons/i-enlarge.svelte';
-  import { onDestroy, onMount, tick, untrack } from 'svelte';
-  import { browser } from '$app/environment';
+
+  type BodyAttrs = {
+    overflow: string;
+    width: string;
+  };
 
   /**
    * The selector query we use to find and track the image
@@ -41,6 +38,11 @@
     overflow: '',
     width: ''
   };
+</script>
+
+<script lang="ts">
+  import { onDestroy, onMount, tick, untrack } from 'svelte';
+  import { browser } from '$app/environment';
 
   let {
     a11y_name_button_unzoom = 'Minimize image',
