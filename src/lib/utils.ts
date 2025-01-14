@@ -185,12 +185,12 @@ const get_img_regular_style = ({
   };
 };
 
-export interface ParsePosition {
+interface ParsePosition {
   position: string;
   relative_num: number;
 }
 
-export const parse_position = ({ position, relative_num }: ParsePosition): number => {
+const parse_position = ({ position, relative_num }: ParsePosition): number => {
   const position_num = parseFloat(position);
 
   return position.endsWith('%') ? (relative_num * position_num) / 100 : position_num;
@@ -259,10 +259,95 @@ const get_div_img_style = ({
   return {
     top: `${container_top + pos_y}px`,
     left: `${container_left + pos_x}px`,
-    width: `${width * ratio * scale}`,
-    height: `${height * ratio * scale}`,
+    width: `${width * ratio * scale}px`,
+    height: `${height * ratio * scale}px`,
     transform: `translate(0,0) scale(${1 / scale})`
   };
+};
+
+interface ImgFitObjectStyleParams extends RegularStyleParams {
+  object_fit: string;
+  object_position: string;
+}
+
+const get_img_object_fit_style = ({
+  object_fit,
+  object_position,
+  container_height,
+  container_width,
+  container_left,
+  container_top,
+  height,
+  width,
+  offset,
+  has_scalable_src
+}: ImgFitObjectStyleParams): Record<string, string> => {
+  if (object_fit === 'scale-down') {
+    if (width <= container_width && height <= container_height) {
+      object_fit = 'none';
+    } else {
+      object_fit = 'contain';
+    }
+  }
+
+  function compute_ratio() {
+    const width_ratio = container_width / width;
+    const height_ratio = container_height / height;
+
+    return object_fit === 'cover' || object_fit === 'fill'
+      ? Math.max(width_ratio, height_ratio)
+      : object_fit === 'contain'
+        ? Math.min(width_ratio, height_ratio)
+        : 1;
+  }
+
+  const ratio = compute_ratio();
+
+  // calculate scale
+  const scale = get_scale({
+    container_height: height * ratio,
+    container_width: width * ratio,
+    height,
+    width,
+    offset,
+    has_scalable_src
+  });
+  // compute position based on object_position
+  const [_pos_x = '50%', _pos_y = '50%'] = object_position.split(' ');
+  const pos_x = parse_position({
+    position: _pos_x,
+    relative_num: container_width - width * ratio
+  });
+  const pos_y = parse_position({
+    position: _pos_y,
+    relative_num: container_height - height * ratio
+  });
+
+  if (object_fit === 'cover' || object_fit === 'contain') {
+    return {
+      top: `${container_top + pos_y}px`,
+      left: `${container_left + pos_x}px`,
+      width: `${width * ratio * scale}px`,
+      height: `${height * ratio * scale}px`,
+      transform: `translate(0,0) scale(${1 / scale})`
+    };
+  } else if (object_fit === 'none') {
+    return {
+      top: `${container_top + pos_y}px`,
+      left: `${container_left + pos_x}px`,
+      width: `${width * scale}px`,
+      height: `${height * scale}px`,
+      transform: `translate(0,0) scale(${1 / scale})`
+    };
+  } else if (object_fit === 'fill') {
+    return {
+      width: `${container_width * scale}px`,
+      height: `${container_height * scale}px`,
+      transform: `translate(0,0) scale(${1 / scale})`
+    };
+  } else {
+    return {};
+  }
 };
 
 const SRC_SVG_REGEX = /\.svg$/i;
@@ -291,7 +376,8 @@ export const get_style_modal_img = ({
   const img_rect = target_el.getBoundingClientRect();
   const target_el_computed_style = window.getComputedStyle(target_el);
 
-  const is_div_img = loaded_img_el && test_div(target_el);
+  const is_div_img = loaded_img_el != null && test_div(target_el);
+  const is_img_object_fit = loaded_img_el != null && !is_div_img;
 
   const width = loaded_img_el?.naturalWidth || img_rect.width;
   const height = loaded_img_el?.naturalHeight || img_rect.height;
@@ -322,7 +408,22 @@ export const get_style_modal_img = ({
       })
     : {};
 
-  const style = Object.assign({}, style_img_regular, style_div_img);
+  const style_img_object_fit = is_img_object_fit
+    ? get_img_object_fit_style({
+        object_position: target_el_computed_style.objectPosition,
+        object_fit: target_el_computed_style.objectFit,
+        container_height: img_rect.height,
+        container_width: img_rect.width,
+        container_left: img_rect.left,
+        container_top: img_rect.top,
+        height,
+        width,
+        offset,
+        has_scalable_src
+      })
+    : {};
+
+  const style = Object.assign({}, style_img_regular, style_img_object_fit, style_div_img);
 
   if (is_zoomed) {
     const viewport_x = window.innerWidth / 2;
