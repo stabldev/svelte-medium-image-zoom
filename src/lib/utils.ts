@@ -139,17 +139,17 @@ const get_scale = ({
 
   return !has_scalable_src && height && width
     ? get_scale_to_window_max({
-      container_height,
-      container_width,
-      height,
-      width,
-      offset
-    })
+        container_height,
+        container_width,
+        height,
+        width,
+        offset
+      })
     : get_scale_to_window({
-      height: container_height,
-      width: container_width,
-      offset
-    });
+        height: container_height,
+        width: container_width,
+        offset
+      });
 };
 
 interface RegularStyleParams extends ScaleParams {
@@ -284,9 +284,9 @@ const get_img_object_fit_style = ({
 }: ImgFitObjectStyleParams): Record<string, string> => {
   if (object_fit === 'scale-down') {
     if (width <= container_width && height <= container_height) {
-      object_fit = 'none'
+      object_fit = 'none';
     } else {
-      object_fit = 'contain'
+      object_fit = 'contain';
     }
   }
 
@@ -298,10 +298,10 @@ const get_img_object_fit_style = ({
       ? Math.max(width_ratio, height_ratio)
       : object_fit === 'contain'
         ? Math.min(width_ratio, height_ratio)
-        : 1
+        : 1;
   }
 
-  const ratio = compute_ratio()
+  const ratio = compute_ratio();
 
   // calculate scale
   const scale = get_scale({
@@ -346,9 +346,9 @@ const get_img_object_fit_style = ({
       transform: `translate(0,0) scale(${1 / scale})`
     };
   } else {
-    return {}
+    return {};
   }
-}
+};
 
 const SRC_SVG_REGEX = /\.svg$/i;
 
@@ -395,39 +395,35 @@ export const get_style_modal_img = ({
 
   const style_div_img = is_div_img
     ? get_div_img_style({
-      background_position: target_el_computed_style.backgroundPosition,
-      background_size: target_el_computed_style.backgroundSize,
-      container_height: img_rect.height,
-      container_width: img_rect.width,
-      container_left: img_rect.left,
-      container_top: img_rect.top,
-      height,
-      width,
-      offset,
-      has_scalable_src
-    })
+        background_position: target_el_computed_style.backgroundPosition,
+        background_size: target_el_computed_style.backgroundSize,
+        container_height: img_rect.height,
+        container_width: img_rect.width,
+        container_left: img_rect.left,
+        container_top: img_rect.top,
+        height,
+        width,
+        offset,
+        has_scalable_src
+      })
     : {};
 
   const style_img_object_fit = is_img_object_fit
     ? get_img_object_fit_style({
-      object_position: target_el_computed_style.objectPosition,
-      object_fit: target_el_computed_style.objectFit,
-      container_height: img_rect.height,
-      container_width: img_rect.width,
-      container_left: img_rect.left,
-      container_top: img_rect.top,
-      height,
-      width,
-      offset,
-      has_scalable_src
-    }) : {}
+        object_position: target_el_computed_style.objectPosition,
+        object_fit: target_el_computed_style.objectFit,
+        container_height: img_rect.height,
+        container_width: img_rect.width,
+        container_left: img_rect.left,
+        container_top: img_rect.top,
+        height,
+        width,
+        offset,
+        has_scalable_src
+      })
+    : {};
 
-  const style = Object.assign(
-    {},
-    style_img_regular,
-    style_img_object_fit,
-    style_div_img
-  );
+  const style = Object.assign({}, style_img_regular, style_img_object_fit, style_div_img);
 
   if (is_zoomed) {
     const viewport_x = window.innerWidth / 2;
