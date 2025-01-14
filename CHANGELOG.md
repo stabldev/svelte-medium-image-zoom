@@ -1,5 +1,11 @@
 # svelte-medium-image-zoom
 
+## 0.2.1
+
+### Patch Changes
+
+- 2b2ac69: chore: update readme with latest changes
+
 ## 0.2.0
 
 ### Minor Changes
