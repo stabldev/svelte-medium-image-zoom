@@ -1,5 +1,13 @@
 # svelte-medium-image-zoom
 
+## 0.1.7
+
+### Patch Changes
+
+- 04c18c8: chore: run prettier
+- 8e886cd: chore: patch_3 v0.1.7
+- d4647f3: refactor(perf): module-level imports
+
 ## 0.1.6
 
 ### Patch Changes
