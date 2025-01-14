@@ -11,10 +11,15 @@ to see various usages.
 
 Features:
 
-- `<img />`, including [`loading="lazy"`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#attr-loading)
+- `<img />`, including all [`object-fit`](https://developer.mozilla.org/en-US/docs/Web/CSS/object-fit)
+  values, any [`object-position`](https://developer.mozilla.org/en-US/docs/Web/CSS/object-position),
+  and [`loading="lazy"`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#attr-loading)
 - `<div>` and `<span>` with any [`background-image`](https://developer.mozilla.org/en-US/docs/Web/CSS/background-image),
   [`background-size`](https://developer.mozilla.org/en-US/docs/Web/CSS/background-size),
   and [`background-position`](https://developer.mozilla.org/en-US/docs/Web/CSS/background-position)
+-  `<picture>` with `<source />` and `<img />` (coming)
+-  `<figure>` with `<img />` (coming)
+-  `<svg>` (coming)
 - [Custom zoom modal content](#custom-zoom-modal-content) (👇)
 - Zero `dependencies`
 
