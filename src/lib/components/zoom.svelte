@@ -464,10 +464,10 @@
 {#snippet modal_content()}
   {#if zoom_content}
     {@render zoom_content({
-      modal_state,
       img: modal_img,
-      on_unzoom: handle_unzoom,
-      button_unzoom: modal_button_unzoom
+      button_unzoom: modal_button_unzoom,
+      modal_state,
+      handle_unzoom
     })}
   {:else}
     {@render modal_img()}

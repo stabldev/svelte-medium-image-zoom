@@ -104,7 +104,7 @@ export interface ZoomProps {
     img: Snippet<[]>;
     button_unzoom: Snippet<[]>;
     modal_state: IModalState;
-    on_unzoom: () => void;
+    handle_unzoom: () => void;
   }]>;
 
   // Offset in pixels the zoomed image should
