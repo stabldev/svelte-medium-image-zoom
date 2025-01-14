@@ -290,35 +290,40 @@ const get_img_object_fit_style = ({
     }
   }
 
-  if (object_fit === 'cover' || object_fit === 'contain') {
+  function compute_ratio() {
     const width_ratio = container_width / width;
     const height_ratio = container_height / height;
 
-    const ratio = object_fit === 'cover'
+    return object_fit === 'cover' || object_fit === 'fill'
       ? Math.max(width_ratio, height_ratio)
-      : Math.min(width_ratio, height_ratio)
+      : object_fit === 'contain'
+        ? Math.min(width_ratio, height_ratio)
+        : 1
+  }
 
-    // compute position based on object_position
-    const [_pos_x = '50%', _pos_y = '50%'] = object_position.split(' ');
-    const pos_x = parse_position({
-      position: _pos_x,
-      relative_num: container_width - width * ratio
-    });
-    const pos_y = parse_position({
-      position: _pos_y,
-      relative_num: container_height - height * ratio
-    });
+  const ratio = compute_ratio()
 
-    // calculate scale
-    const scale = get_scale({
-      container_height: height * ratio,
-      container_width: width * ratio,
-      height,
-      width,
-      offset,
-      has_scalable_src
-    });
+  // calculate scale
+  const scale = get_scale({
+    container_height: height * ratio,
+    container_width: width * ratio,
+    height,
+    width,
+    offset,
+    has_scalable_src
+  });
+  // compute position based on object_position
+  const [_pos_x = '50%', _pos_y = '50%'] = object_position.split(' ');
+  const pos_x = parse_position({
+    position: _pos_x,
+    relative_num: container_width - width * ratio
+  });
+  const pos_y = parse_position({
+    position: _pos_y,
+    relative_num: container_height - height * ratio
+  });
 
+  if (object_fit === 'cover' || object_fit === 'contain') {
     return {
       top: `${container_top + pos_y}px`,
       left: `${container_left + pos_x}px`,
@@ -327,30 +332,6 @@ const get_img_object_fit_style = ({
       transform: `translate(0,0) scale(${1 / scale})`
     };
   } else if (object_fit === 'none') {
-    const width_ratio = container_width / width;
-    const height_ratio = container_height / height;
-
-    // compute position based on object_position
-    const [_pos_x = '50%', _pos_y = '50%'] = object_position.split(' ');
-    const pos_x = parse_position({
-      position: _pos_x,
-      relative_num: container_width - width
-    });
-    const pos_y = parse_position({
-      position: _pos_y,
-      relative_num: container_height - height
-    });
-
-    // calculate scale
-    const scale = get_scale({
-      container_height: height,
-      container_width: width,
-      height,
-      width,
-      offset,
-      has_scalable_src
-    });
-
     return {
       top: `${container_top + pos_y}px`,
       left: `${container_left + pos_x}px`,
@@ -359,21 +340,6 @@ const get_img_object_fit_style = ({
       transform: `translate(0,0) scale(${1 / scale})`
     };
   } else if (object_fit === 'fill') {
-    const width_ratio = container_width / width;
-    const height_ratio = container_height / height;
-
-    const ratio = Math.max(width_ratio, height_ratio)
-
-    // calculate scale
-    const scale = get_scale({
-      container_height: height * ratio,
-      container_width: width * ratio,
-      height,
-      width,
-      offset,
-      has_scalable_src
-    });
-
     return {
       width: `${container_width * scale}px`,
       height: `${container_height * scale}px`,
