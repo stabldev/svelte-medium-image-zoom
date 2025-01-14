@@ -1,5 +1,17 @@
 # svelte-medium-image-zoom
 
+## 0.2.0
+
+### Minor Changes
+
+- 77942ac: feat: proper support for `img` and `div` elements
+- 77942ac: refactor: better project structure
+
+### Patch Changes
+
+- cdf1122: feat: handle Image object fit properties
+- fe1c828: refactor: verbose name on_unzoom to handle_unzoom
+
 ## 0.1.7
 
 ### Patch Changes
