@@ -45,10 +45,10 @@ jobs:
       - name: Create Release Pull Request or Publish to npm
         uses: changesets/action@v1
         with:
-          title: 'chore(release): version packages'
+          title: 'chore(ci): version package'
+          commit: 'chore: version package'
           publish: npm run release:publish
           version: npm run release:version
-          commit: 'chore(release): version packages'
         env:
           GITHUB_TOKEN: ${{ env.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ env.NPM_TOKEN }}
