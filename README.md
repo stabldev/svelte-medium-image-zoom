@@ -17,9 +17,9 @@ Features:
 - `<div>` and `<span>` with any [`background-image`](https://developer.mozilla.org/en-US/docs/Web/CSS/background-image),
   [`background-size`](https://developer.mozilla.org/en-US/docs/Web/CSS/background-size),
   and [`background-position`](https://developer.mozilla.org/en-US/docs/Web/CSS/background-position)
--  `<picture>` with `<source />` and `<img />` (coming)
--  `<figure>` with `<img />` (coming)
--  `<svg>` (coming)
+- `<picture>` with `<source />` and `<img />` (coming)
+- `<figure>` with `<img />` (coming)
+- `<svg>` (coming)
 - [Custom zoom modal content](#custom-zoom-modal-content) (👇)
 - Zero `dependencies`
 

@@ -265,6 +265,9 @@
    * Report that zooming should occur
    */
   function handle_zoom() {
+    // https://github.com/moonlitgrace/svelte-medium-image-zoom/issues/49
+    if (modal_state === ModalState.UNLOADING) return;
+
     if (is_zoomed === undefined) {
       // uncontrolled-mode
       is_zoomed_internal = true;
@@ -280,6 +283,9 @@
    * Report that unzooming should occur
    */
   function handle_unzoom() {
+    // https://github.com/moonlitgrace/svelte-medium-image-zoom/issues/49
+    if (modal_state === ModalState.LOADING) return;
+
     if (is_zoomed === undefined) {
       // uncontrolled-mode
       is_zoomed_internal = false;
