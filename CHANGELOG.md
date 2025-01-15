@@ -1,5 +1,14 @@
 # svelte-medium-image-zoom
 
+## 0.2.2
+
+### Patch Changes
+
+- 95fc3ef: refactor: removed unnecessary derived.by states
+- 636c4cc: refactor: parse_position params
+- 7e33666: fix: proper modal_state change
+- 1c07260: refactor: move up parse functions
+
 ## 0.2.1
 
 ### Patch Changes
