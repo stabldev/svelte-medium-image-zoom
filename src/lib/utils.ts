@@ -38,12 +38,13 @@ export const style_obj_to_css_string = (style: Record<string, string>) => {
     .join(' ');
 };
 
-interface ParsePosition {
-  position: string;
-  relative_num: number;
-}
-
-const parse_position = ({ position, relative_num }: ParsePosition): number => {
+/**
+ * @summary Parse position based on relative number
+ * @params
+ * position: string;
+ * relative_num: number;
+ */
+const parse_position = (position: string, relative_num: number): number => {
   const position_num = parseFloat(position);
 
   return position.endsWith('%') ? (relative_num * position_num) / 100 : position_num;
@@ -252,11 +253,8 @@ const get_div_img_style = ({
     }
 
     const [size_w = '50%', size_h = '50%'] = background_size.split(' ');
-    const size_width = parse_position({ position: size_w, relative_num: container_width });
-    const size_height = parse_position({
-      position: size_h,
-      relative_num: container_height
-    });
+    const size_width = parse_position(size_w, container_width);
+    const size_height = parse_position(size_h, container_height);
 
     return Math.min(size_width / width, size_height / height);
   }
@@ -264,14 +262,8 @@ const get_div_img_style = ({
   const ratio = compute_ratio();
   // compute position based on background_position
   const [_pos_x = '50%', _pos_y = '50%'] = background_position.split(' ');
-  const pos_x = parse_position({
-    position: _pos_x,
-    relative_num: container_width - width * ratio
-  });
-  const pos_y = parse_position({
-    position: _pos_y,
-    relative_num: container_height - height * ratio
-  });
+  const pos_x = parse_position(_pos_x, container_width - width * ratio);
+  const pos_y = parse_position(_pos_y, container_height - height * ratio);
 
   // calculate scale
   const scale = get_scale({
@@ -341,14 +333,8 @@ const get_img_object_fit_style = ({
   });
   // compute position based on object_position
   const [_pos_x = '50%', _pos_y = '50%'] = object_position.split(' ');
-  const pos_x = parse_position({
-    position: _pos_x,
-    relative_num: container_width - width * ratio
-  });
-  const pos_y = parse_position({
-    position: _pos_y,
-    relative_num: container_height - height * ratio
-  });
+  const pos_x = parse_position(_pos_x, container_width - width * ratio);
+  const pos_y = parse_position(_pos_y, container_height - height * ratio);
 
   if (object_fit === 'cover' || object_fit === 'contain') {
     return {
