@@ -1,7 +1,7 @@
 import type { Nullable, SupportedImage } from './types.js';
 
 /**
- * Generate random string id with given segments and length
+ * @summary Generate random string id with given segments and length
  * @params
  * segments: string = 3
  * length: string = 4
@@ -12,7 +12,7 @@ export const generate_id = (segments = 3, length = 4) =>
   );
 
 /**
- * Find or create a container for the dialog
+ * @summary Find or create a container for the dialog
  */
 export const get_dialog_container = (): HTMLElement => {
   let el = document.querySelector('[data-smiz-portal]');
@@ -27,7 +27,7 @@ export const get_dialog_container = (): HTMLElement => {
 };
 
 /**
- * Convert style object to css string
+ * @summary Convert style object to css string
  * @params
  * style: string;
  * style = { top: 100px } => "top: 100px;"
@@ -36,6 +36,44 @@ export const style_obj_to_css_string = (style: Record<string, string>) => {
   return Object.entries(style)
     .map(([key, value]) => `${key}: ${value};`)
     .join(' ');
+};
+
+interface ParsePosition {
+  position: string;
+  relative_num: number;
+}
+
+const parse_position = ({ position, relative_num }: ParsePosition): number => {
+  const position_num = parseFloat(position);
+
+  return position.endsWith('%') ? (relative_num * position_num) / 100 : position_num;
+};
+
+/**
+ * @summary Parse given duration to proper formats
+ * @param { string | number } input
+ * @example
+ * ### Example use
+ * ```ts
+ * const parsed_duration = parse_duration(3000);
+ * // output: 3000ms
+ * ```
+ */
+export const parse_duration = (input: string | number): string => {
+  if (typeof input === 'number') {
+    return `${input}ms`;
+  }
+
+  const regex = /^(\d+)(ms|s)?$/; // match '1000ms', '1s', or '1000'
+  const match = String(input).trim().match(regex);
+
+  if (match) {
+    const [, value, unit] = match;
+    return `${value}${unit || 'ms'}`;
+  }
+
+  console.warn('invalid duration format. falling back to default: 300ms');
+  return '100ms';
 };
 
 interface TestElType {
@@ -139,17 +177,17 @@ const get_scale = ({
 
   return !has_scalable_src && height && width
     ? get_scale_to_window_max({
-        container_height,
-        container_width,
-        height,
-        width,
-        offset
-      })
+      container_height,
+      container_width,
+      height,
+      width,
+      offset
+    })
     : get_scale_to_window({
-        height: container_height,
-        width: container_width,
-        offset
-      });
+      height: container_height,
+      width: container_width,
+      offset
+    });
 };
 
 interface RegularStyleParams extends ScaleParams {
@@ -183,17 +221,6 @@ const get_img_regular_style = ({
     height: `${container_height * scale}px`,
     transform: `translate(0, 0) scale(${1 / scale})`
   };
-};
-
-interface ParsePosition {
-  position: string;
-  relative_num: number;
-}
-
-const parse_position = ({ position, relative_num }: ParsePosition): number => {
-  const position_num = parseFloat(position);
-
-  return position.endsWith('%') ? (relative_num * position_num) / 100 : position_num;
 };
 
 interface DivStyleParams extends RegularStyleParams {
@@ -395,32 +422,32 @@ export const get_style_modal_img = ({
 
   const style_div_img = is_div_img
     ? get_div_img_style({
-        background_position: target_el_computed_style.backgroundPosition,
-        background_size: target_el_computed_style.backgroundSize,
-        container_height: img_rect.height,
-        container_width: img_rect.width,
-        container_left: img_rect.left,
-        container_top: img_rect.top,
-        height,
-        width,
-        offset,
-        has_scalable_src
-      })
+      background_position: target_el_computed_style.backgroundPosition,
+      background_size: target_el_computed_style.backgroundSize,
+      container_height: img_rect.height,
+      container_width: img_rect.width,
+      container_left: img_rect.left,
+      container_top: img_rect.top,
+      height,
+      width,
+      offset,
+      has_scalable_src
+    })
     : {};
 
   const style_img_object_fit = is_img_object_fit
     ? get_img_object_fit_style({
-        object_position: target_el_computed_style.objectPosition,
-        object_fit: target_el_computed_style.objectFit,
-        container_height: img_rect.height,
-        container_width: img_rect.width,
-        container_left: img_rect.left,
-        container_top: img_rect.top,
-        height,
-        width,
-        offset,
-        has_scalable_src
-      })
+      object_position: target_el_computed_style.objectPosition,
+      object_fit: target_el_computed_style.objectFit,
+      container_height: img_rect.height,
+      container_width: img_rect.width,
+      container_left: img_rect.left,
+      container_top: img_rect.top,
+      height,
+      width,
+      offset,
+      has_scalable_src
+    })
     : {};
 
   const style = Object.assign({}, style_img_regular, style_img_object_fit, style_div_img);
@@ -463,31 +490,4 @@ export const get_style_ghost = (
     top: `${img_el.offsetTop}px`,
     left: `${img_el.offsetLeft}px`
   };
-};
-
-/**
- * @summary Parse given duration to proper formats
- * @param { string | number } input
- * @example
- * ### Example use
- * ```ts
- * const parsed_duration = parse_duration(3000);
- * // output: 3000ms
- * ```
- */
-export const parse_duration = (input: string | number): string => {
-  if (typeof input === 'number') {
-    return `${input}ms`;
-  }
-
-  const regex = /^(\d+)(ms|s)?$/; // match '1000ms', '1s', or '1000'
-  const match = String(input).trim().match(regex);
-
-  if (match) {
-    const [, value, unit] = match;
-    return `${value}${unit || 'ms'}`;
-  }
-
-  console.warn('invalid duration format. falling back to default: 300ms');
-  return '100ms';
 };
