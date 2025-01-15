@@ -81,12 +81,12 @@
 
   const id_modal = $derived(`smiz-modal-${_id}`);
   const id_modal_img = $derived(`smiz-modal-img-${_id}`);
-  const is_modal_active = $derived.by(
-    () => modal_state === ModalState.LOADING || modal_state === ModalState.LOADED
+  const is_modal_active = $derived(
+    modal_state === ModalState.LOADING || modal_state === ModalState.LOADED
   );
 
   const data_content_state = $derived(has_image() ? 'found' : 'not-found');
-  const data_overlay_state = $derived.by(() =>
+  const data_overlay_state = $derived(
     modal_state === ModalState.UNLOADED || modal_state === ModalState.UNLOADING
       ? 'hidden'
       : 'visible'
@@ -99,11 +99,11 @@
   const img_sizes = $derived(is_img ? (img_el as HTMLImageElement).sizes : undefined);
   const img_srcset = $derived(is_img ? (img_el as HTMLImageElement).srcset : undefined);
 
-  const label_btn_zoom = $derived.by(() =>
+  const label_btn_zoom = $derived(
     img_alt ? `${a11y_name_button_zoom}: ${img_alt}` : a11y_name_button_zoom
   );
 
-  const style_modal_img_obj = $derived.by(() =>
+  const style_modal_img_obj = $derived(
     has_image()
       ? get_style_modal_img({
           is_zoomed: _is_zoomed && is_modal_active,
@@ -116,6 +116,7 @@
       : {}
   );
   const style_modal_img_string = $derived(style_obj_to_css_string(style_modal_img_obj));
+
   let style_ghost = $state<Record<string, string>>({});
   const style_ghost_string = $derived(style_obj_to_css_string(style_ghost));
 
@@ -176,7 +177,7 @@
   });
 
   /**
-   * Debounce modal_state updates, prevents re-triggering updates.
+   * prevents re-triggering updates.
    */
   function set_modal_state(new_state: IModalState) {
     if (modal_state !== new_state) {
@@ -185,14 +186,14 @@
   }
 
   /**
-   * Check if we have a loaded image to work with
+   * check if we have a loaded image to work with
    */
   function has_image() {
     return img_el && loaded_img_el && window.getComputedStyle(img_el).display !== 'none';
   }
 
   /**
-   * Find and set the image we're working with
+   * find and set the image we're working with
    */
   async function set_and_track_img() {
     // wait for the DOM to update
@@ -215,8 +216,8 @@
 
         if (entry.target) {
           img_el = entry.target as SupportedImage;
-          // Update ghost and force a re-render.
-          // Always force a re-render here, even if we remove
+          // update ghost and force a re-render.
+          // always force a re-render here, even if we remove
           // all state changes. Pass `{}` in that case.
           style_ghost = get_style_ghost(img_el);
         }
@@ -225,7 +226,7 @@
   }
 
   /**
-   * Ensure we always have the latest img src value loaded
+   * ensure we always have the latest img src value loaded
    */
   function handle_img_load() {
     if (!img_el) return;
@@ -262,7 +263,7 @@
   }
 
   /**
-   * Report that zooming should occur
+   * report that zooming should occur
    */
   function handle_zoom() {
     // https://github.com/moonlitgrace/svelte-medium-image-zoom/issues/49
@@ -280,7 +281,7 @@
   }
 
   /**
-   * Report that unzooming should occur
+   * report that unzooming should occur
    */
   function handle_unzoom() {
     // https://github.com/moonlitgrace/svelte-medium-image-zoom/issues/49
@@ -296,7 +297,7 @@
   }
 
   /**
-   * Capture click event when clicking unzoom button
+   * capture click event when clicking unzoom button
    */
   function handle_unzoom_btn_click(e: MouseEvent) {
     e.preventDefault();
@@ -305,7 +306,7 @@
   }
 
   /**
-   * Prevent the browser from removing the dialog on Escape
+   * prevent the browser from removing the dialog on Escape
    */
   function handle_dialog_cancel(e: Event) {
     e.preventDefault();
@@ -322,7 +323,7 @@
   }
 
   /**
-   *  Prevent dialog's close event from closing a parent modal
+   *  prevent dialog's close event from closing a parent modal
    */
   function handle_dialog_close(e: Event) {
     e.stopPropagation();
@@ -330,7 +331,7 @@
   }
 
   /**
-   * Intercept default dialog.close() and use ours so we can animate
+   * intercept default dialog.close() and use ours so we can animate
    */
   function handle_key_down(e: KeyboardEvent) {
     if (e.key === 'Escape') {
@@ -341,7 +342,7 @@
   }
 
   /**
-   * Unzoom on wheel event
+   * unzoom on wheel event
    */
   function handle_wheel(e: WheelEvent) {
     // don't handle the event when the user is zooming with ctrl + wheel (or with pinch to zoom)
@@ -354,7 +355,7 @@
   }
 
   /**
-   * Force re-render on resize
+   * force re-render on resize
    */
   function handle_resize() {
     should_refresh = true;
@@ -362,7 +363,7 @@
   }
 
   /**
-   * Perform zooming actions
+   * perform zooming actions
    */
   function zoom() {
     body_scroll_disable();
@@ -372,14 +373,14 @@
   }
 
   /**
-   * Perform unzooming actions
+   * perform unzooming actions
    */
   function unzoom() {
     set_modal_state(ModalState.UNLOADING);
   }
 
   /**
-   * Handle img zoom/unzoom transitionend events and update states:
+   * handle img zoom/unzoom transitionend events and update states:
    *   - LOADING -> LOADED
    *   - UNLOADING -> UNLOADED
    */
@@ -395,7 +396,7 @@
   }
 
   /**
-   * Ensure handle_img_transition_end gets called. Safari can have significant
+   * ensure handle_img_transition_end gets called. Safari can have significant
    * delays before firing the event.
    */
   function ensure_img_transition_end() {
@@ -411,7 +412,7 @@
   }
 
   /**
-   * Disable body scrolling
+   * disable body scrolling
    */
   function body_scroll_disable() {
     prev_body_attrs = {
@@ -427,7 +428,7 @@
   }
 
   /**
-   * Enable body scrolling
+   * enable body scrolling
    */
   function body_scroll_enable() {
     document.body.style.width = prev_body_attrs.width;
