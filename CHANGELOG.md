@@ -1,5 +1,12 @@
 # svelte-medium-image-zoom
 
+## 0.2.3
+
+### Patch Changes
+
+- f0c2c04: chore(deps-dev): bump vite from 5.4.14 to 6.0.11
+- d895065: chore(deps-dev): bump @sveltejs/vite-plugin-svelte from 4.0.4 to 5.0.3
+
 ## 0.2.2
 
 ### Patch Changes
