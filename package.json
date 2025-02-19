@@ -89,7 +89,7 @@
     "globals": "^15.0.0",
     "prettier": "^3.3.2",
     "prettier-plugin-svelte": "^3.2.6",
-    "publint": "^0.2.0",
+    "publint": "^0.3.5",
     "storybook": "^8.4.7",
     "svelte": "^5.0.0",
     "svelte-check": "^4.0.0",
