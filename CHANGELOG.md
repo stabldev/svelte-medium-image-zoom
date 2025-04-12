@@ -1,5 +1,12 @@
 # svelte-medium-image-zoom
 
+## 0.2.5
+
+### Patch Changes
+
+- c465d73: chore(deps): update dependencies
+- b1c2748: feat: cross_origin image attribute
+
 ## 0.2.4
 
 ### Patch Changes
