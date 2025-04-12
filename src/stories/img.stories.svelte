@@ -15,7 +15,7 @@
   import type { Nullable } from '$lib/types.js';
 
   const { Story } = defineMeta({
-    title: '<img>',
+    title: 'Example/<img>',
     component: Zoom
   });
 
