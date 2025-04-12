@@ -14,7 +14,7 @@
     "format": "prettier --write .",
     "lint": "prettier --check . && eslint .",
     "storybook": "storybook dev -p 6006",
-    "build:storybook": "NODE_OPTIONS='--no-experimental-require-module' storybook build",
+    "build:storybook": "storybook build",
     "changeset": "changeset",
     "release": "npm run release:version && npm run release:publish",
     "release:version": "changeset version",
