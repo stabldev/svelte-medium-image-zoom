@@ -23,6 +23,12 @@
   };
 
   /**
+   * Allowed values for IMG crossOrigin policy attribute
+   */
+  const allowed_cross_origin_values = ['', 'anonymous', 'use-credentials'] as const;
+  type CrossOriginValue = (typeof allowed_cross_origin_values)[number];
+
+  /**
    * The selector query we use to find and track the image
    */
   const IMAGE_QUERY = ['img', '[role="img"]', '[data-zoom]']
@@ -98,6 +104,14 @@
   const img_src = $derived(get_img_src(img_el));
   const img_sizes = $derived(is_img ? (img_el as HTMLImageElement).sizes : undefined);
   const img_srcset = $derived(is_img ? (img_el as HTMLImageElement).srcset : undefined);
+  const img_cross_origin = $derived.by(() => {
+    if (!is_img) return;
+    const val = (img_el as HTMLImageElement).crossOrigin;
+    return typeof val === 'string' &&
+      allowed_cross_origin_values.includes(val as CrossOriginValue)
+      ? (val as CrossOriginValue)
+      : undefined;
+  });
 
   const label_btn_zoom = $derived(
     img_alt ? `${a11y_name_button_zoom}: ${img_alt}` : a11y_name_button_zoom
@@ -239,6 +253,7 @@
     if (test_img(img_el)) {
       img.sizes = img_el.sizes;
       img.srcset = img_el.srcset;
+      img.crossOrigin = img_el.crossOrigin;
     }
 
     // img.src must be set after sizes and srcset
@@ -441,6 +456,7 @@
   <img
     bind:this={ref_modal_img}
     alt={img_alt}
+    crossorigin={img_cross_origin}
     src={img_src}
     srcset={img_srcset}
     sizes={img_sizes}
