@@ -11,6 +11,7 @@
   <img
     alt={img_that_wanaka_tree.alt}
     src={img_that_wanaka_tree.src}
+    crossorigin="anonymous"
     width="500"
     decoding="async"
     loading="lazy"
