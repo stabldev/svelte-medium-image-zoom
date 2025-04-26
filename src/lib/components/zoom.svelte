@@ -150,14 +150,13 @@
     img_el?.removeEventListener('load', handle_img_load);
     img_el?.removeEventListener('click', handle_zoom);
     ref_modal_img?.removeEventListener('transitionend', handle_img_transition_end);
+    img_el_resize_observer?.disconnect();
 
     if (BROWSER) {
       window.removeEventListener('resize', handle_resize);
       window.removeEventListener('wheel', handle_wheel);
       document.removeEventListener('keydown', handle_key_down, true);
     }
-
-    img_el_resize_observer?.disconnect();
   });
 
   // handle modal_state changes
