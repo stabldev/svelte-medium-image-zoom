@@ -48,7 +48,7 @@
 
 <script lang="ts">
   import { onDestroy, onMount, tick, untrack } from 'svelte';
-  import { browser } from '$app/environment';
+  import { BROWSER } from 'esm-env';
 
   let {
     a11y_name_button_unzoom = 'Minimize image',
@@ -143,16 +143,21 @@
   });
 
   onDestroy(() => {
+    if (modal_state !== ModalState.UNLOADED) {
+      body_scroll_enable();
+    }
+
     img_el?.removeEventListener('load', handle_img_load);
     img_el?.removeEventListener('click', handle_zoom);
     ref_modal_img?.removeEventListener('transitionend', handle_img_transition_end);
-    img_el_resize_observer?.disconnect();
 
-    if (browser) {
+    if (BROWSER) {
       window.removeEventListener('resize', handle_resize);
       window.removeEventListener('wheel', handle_wheel);
       document.removeEventListener('keydown', handle_key_down, true);
     }
+
+    img_el_resize_observer?.disconnect();
   });
 
   // handle modal_state changes
