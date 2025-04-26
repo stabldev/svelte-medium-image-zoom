@@ -1,5 +1,11 @@
 # svelte-medium-image-zoom
 
+## 0.2.6
+
+### Patch Changes
+
+- f6c6220: fix: use esm-env instead kit specific variables
+
 ## 0.2.5
 
 ### Patch Changes
